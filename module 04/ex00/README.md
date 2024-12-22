@@ -224,7 +224,3 @@ public:
 
 In these classes, `WrongAnimal` and `WrongCat` illustrate what happens when polymorphism is not implemented correctly. `WrongAnimal` does not use virtual functions for its `makeSound`, which means that it will not exhibit polymorphic behavior when used in a base class pointer context. This demonstrates the importance of using virtual functions to achieve polymorphism in C++.
 
-
-## Summary
-
-This exercise teaches the importance and implementation of polymorphism in C++ using virtual functions and inheritance. By creating a base class with a virtual function and derived classes that override this function, you can achieve polymorphic behavior, allowing different derived classes to be treated uniformly while still providing their specific implementations. The use of a main function to test this setup shows how polymorphism works in practice.
