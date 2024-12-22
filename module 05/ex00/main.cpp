@@ -3,50 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/04 10:24:05 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/07/04 10:44:49 by zelhajou         ###   ########.fr       */
+/*   Created: 2024/12/22 13:45:35 by zelhajou          #+#    #+#             */
+/*   Updated: 2024/12/22 13:46:37 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 
-int main() {
+int main()
+{
+    std::cout << "\n-------- Test 1: Valid Bureaucrat --------\n";
     try {
-        Bureaucrat bob("Bob", 2);
+        Bureaucrat bob("Bob", 75);
         std::cout << bob << std::endl;
-
+        
+        std::cout << "Incrementing grade..." << std::endl;
         bob.incrementGrade();
         std::cout << bob << std::endl;
-
-        bob.incrementGrade(); // This will throw an exception
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        
+        std::cout << "Decrementing grade..." << std::endl;
+        bob.decrementGrade();
+        std::cout << bob << std::endl;
+    }
+    catch(const std::exception& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
     }
 
+    std::cout << "\n-------- Test 2: Grade Too High --------\n";
     try {
-        Bureaucrat john("John", 149);
+        Bureaucrat john("John", 0);
         std::cout << john << std::endl;
-
-        john.decrementGrade();
-        std::cout << john << std::endl;
-
-        john.decrementGrade(); // This will throw an exception
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+    }
+    catch(const std::exception& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
     }
 
+    std::cout << "\n-------- Test 3: Grade Too Low --------\n";
     try {
-        Bureaucrat invalid("Invalid", 0); // This will throw an exception
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        Bureaucrat alice("Alice", 151);
+        std::cout << alice << std::endl;
+    }
+    catch(const std::exception& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
     }
 
+    std::cout << "\n-------- Test 4: Increment at Maximum Grade --------\n";
     try {
-        Bureaucrat invalid("Invalid", 151); // This will throw an exception
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+        Bureaucrat max("Max", 1);
+        std::cout << max << std::endl;
+        max.incrementGrade();
+    }
+    catch(const std::exception& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
+    }
+
+    std::cout << "\n-------- Test 5: Decrement at Minimum Grade --------\n";
+    try {
+        Bureaucrat min("Min", 150);
+        std::cout << min << std::endl;
+        min.decrementGrade();
+    }
+    catch(const std::exception& e) {
+        std::cout << "Exception: " << e.what() << std::endl;
     }
 
     return 0;

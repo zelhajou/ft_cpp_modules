@@ -3,53 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zelhajou <zelhajou@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/04 10:24:22 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/07/04 11:04:24 by zelhajou         ###   ########.fr       */
+/*   Created: 2024/12/21 16:23:38 by zelhajou          #+#    #+#             */
+/*   Updated: 2024/12/22 13:53:38 by zelhajou         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: claude <claude@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/11 09:03:31 by claude            #+#    #+#             */
+/*   Updated: 2024/01/11 09:03:31 by claude           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUREAUCRAT_HPP
 #define BUREAUCRAT_HPP
 
-#include <iostream>
 #include <string>
+#include <iostream>
 #include <exception>
 
 class Bureaucrat {
-public:
-    Bureaucrat(const std::string& name, int grade);
-    Bureaucrat(const Bureaucrat& other);
-    Bureaucrat& operator=(const Bureaucrat& other);
-    ~Bureaucrat();
+    private:
+        const std::string   _name;
+        int                 _grade;
 
-    const std::string& getName() const;
-    int getGrade() const;
-
-    void incrementGrade();
-    void decrementGrade();
-
-    class GradeTooHighException : public std::exception {
     public:
-        const char* what() const throw();
-    };
+        // Orthodox Canonical Form
+        Bureaucrat();
+        Bureaucrat(const std::string& name, int grade);
+        Bureaucrat(const Bureaucrat& src);
+        ~Bureaucrat();
+        Bureaucrat& operator=(const Bureaucrat& src);
 
-    class GradeTooLowException : public std::exception {
-    public:
-        const char* what() const throw();
-    };
+        // Getters
+        const std::string&  getName() const;
+        int                 getGrade() const;
 
-private:
-    const std::string name;
-    int grade;
+        // Member functions
+        void incrementGrade();
+        void decrementGrade();
 
-    static const int highestGrade = 1;
-    static const int lowestGrade = 150;
-
-    void checkGrade(int grade) const;
+        // Exception classes
+        class GradeTooHighException : public std::exception {
+            public:
+                const char* what() const throw();
+        };
+        
+        class GradeTooLowException : public std::exception {
+            public:
+                const char* what() const throw();
+        };
 };
 
+// Stream operator overload
 std::ostream& operator<<(std::ostream& os, const Bureaucrat& bureaucrat);
 
-#endif // BUREAUCRAT_HPP
+#endif
