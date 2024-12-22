@@ -45,7 +45,7 @@ function processDirectory(dirPath) {
 }
 
 // Starting point
-const rootDir = './ft_cpp_modules'; // Adjust this path as needed
+const rootDir = '.'; // Adjust this path as needed
 const output = processDirectory(rootDir);
 
 // Write to file
