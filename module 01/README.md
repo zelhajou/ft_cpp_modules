@@ -203,3 +203,13 @@ switch (level) {
 		std::cout << "Invalid level." << std::endl;
 }
 ```
+
+
+## Resources
+
+- [C++ Classes and Objects](https://www.geeksforgeeks.org/c-classes-and-objects/)
+- [Dynamic Memory Allocation in C++](https://www.cplusplus.com/doc/tutorial/dynamic/)
+- [Pointers and References in C++](https://www.geeksforgeeks.org/pointers-vs-references-cpp/)
+- [File I/O in C++](https://www.geeksforgeeks.org/file-handling-c-classes/)
+- [String Manipulation in C++](https://www.cplusplus.com/reference/string/string/)
+- [Switch Statement in C++](https://www.geeksforgeeks.org/switch-statement-cc/)
