@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 16:17:28 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/22 16:55:11 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/23 14:00:14 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <string>
 #include <iostream>
 
-class Bureaucrat; // Forward declaration
+class Bureaucrat;
 
 class Form
 {

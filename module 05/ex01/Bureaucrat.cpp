@@ -6,14 +6,13 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 16:31:11 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/22 16:31:21 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/23 14:17:51 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
 
-/* Orthodox Canonical Form */
 Bureaucrat::Bureaucrat() : _name("default"), _grade(150) {}
 
 Bureaucrat::Bureaucrat(const std::string &name, int grade) : _name(name)
@@ -36,7 +35,6 @@ Bureaucrat &Bureaucrat::operator=(const Bureaucrat &src)
     return *this;
 }
 
-/* Getters */
 const std::string &Bureaucrat::getName() const
 {
     return _name;
@@ -47,7 +45,6 @@ int Bureaucrat::getGrade() const
     return _grade;
 }
 
-/* Member functions */
 void Bureaucrat::incrementGrade()
 {
     if (_grade <= 1)
@@ -76,7 +73,6 @@ void Bureaucrat::signForm(Form &form)
     }
 }
 
-/* Exception methods */
 const char *Bureaucrat::GradeTooHighException::what() const throw()
 {
     return "Grade too high (must be between 1 and 150)";
@@ -87,7 +83,6 @@ const char *Bureaucrat::GradeTooLowException::what() const throw()
     return "Grade too low (must be between 1 and 150)";
 }
 
-/* Stream operator overload */
 std::ostream &operator<<(std::ostream &os, const Bureaucrat &bureaucrat)
 {
     os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
