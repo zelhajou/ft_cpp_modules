@@ -167,3 +167,13 @@ public:
 - Implement pure abstract classes as interfaces
 - Create a material system with cloning capabilities
 - Manage complex object relationships and memory
+
+## Resources
+
+- [Polymorphism in C++](https://www.cplusplus.com/doc/tutorial/polymorphism/)
+- [Abstract Classes in C++](https://www.geeksforgeeks.org/pure-virtual-functions-and-abstract-classes/)
+- [Memory Management in C++](https://www.learncpp.com/cpp-tutorial/15-1-intro-to-smart-pointers-move-semantics/)
+- [Deep Copy in C++](https://www.cplusplus.com/articles/y8hv0pDG/)
+- [Virtual Destructors](https://www.geeksforgeeks.org/virtual-destructor/)
+- [Interfaces in C++](https://www.tutorialspoint.com/cplusplus/cpp_interfaces.htm)
+- [C++ Smart Pointers](https://www.learncpp.com/cpp-tutorial/15-1-intro-to-smart-pointers-move-semantics/)

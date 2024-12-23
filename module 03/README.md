@@ -203,7 +203,7 @@ class D : public B, public C {
 };
 ```
 
-## Exercise Breakdown
+## Exercise Details
 
 ### Exercise 00: ClapTrap
 - Implement a base class with basic attributes and methods
@@ -226,3 +226,12 @@ class D : public B, public C {
 - Solve the diamond problem using virtual inheritance
 - Manage complex constructor chains
 - Implement name conflict resolution
+
+## Resources
+
+- [C++ Inheritance](https://www.geeksforgeeks.org/inheritance-in-c/)
+- [Virtual Functions in C++](https://www.geeksforgeeks.org/virtual-function-cpp/)
+- [Multiple Inheritance and Diamond Problem](https://www.geeksforgeeks.org/multiple-inheritance-in-c/)
+- [Access Specifiers in C++](https://www.geeksforgeeks.org/access-modifiers-in-c/)
+- [Constructor and Destructor Chaining](https://www.geeksforgeeks.org/constructors-c/)
+- [Function Overriding in C++](https://www.geeksforgeeks.org/function-overriding-in-cpp/)

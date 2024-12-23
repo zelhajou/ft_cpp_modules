@@ -522,3 +522,11 @@ int main() {
  return 0;
 }
 ```
+
+## Resources
+
+- [C++ Reference](https://en.cppreference.com/w/)
+- [C++ Tutorial](https://www.cplusplus.com/doc/tutorial/)
+- [C++ Programming](https://www.geeksforgeeks.org/c-plus-plus/)
+- [C++ Standard Library](https://www.geeksforgeeks.org/the-c-standard-template-library-stl/)
+

@@ -80,6 +80,35 @@ public:
         this->grade = grade;
     }
 };
+
+class Form {
+private:
+    const std::string name;
+    bool isSigned;
+    const int gradeToSign;
+
+public:
+    // Basic guarantee - no resource leaks
+    void beSigned(const Bureaucrat& bureaucrat) {
+        if (bureaucrat.getGrade() > gradeToSign)
+            throw GradeTooLowException();
+        isSigned = true;
+    }
+};
+
+class Intern {
+public:
+    // No-throw guarantee - never throws exceptions
+    Form* makeForm(const std::string& formName, const std::string& target) {
+        if (formName == "Robotomy Request")
+            return new RobotomyRequestForm(target);
+        if (formName == "Presidential Pardon")
+            return new PresidentialPardonForm(target);
+        if (formName == "Shrubbery Creation")
+            return new ShrubberyCreationForm(target);
+        return NULL;
+    }
+};
 ```
 
 ### Resource Management in Exceptions
@@ -188,47 +217,10 @@ public:
 - Implement form creation based on form names
 - Practice factory pattern and error handling
 
-## Best Practices
+## Resources
 
-1. **Exception Design**
-   - Make exceptions inherit from std::exception
-   - Provide meaningful error messages
-   - Keep exception hierarchies simple
-
-2. **Resource Management**
-   - Use RAII to manage resources
-   - Ensure exception safety in constructors
-   - Clean up resources in destructors
-
-3. **Error Handling**
-   - Catch exceptions by const reference
-   - Only catch exceptions you can handle
-   - Don't use exceptions for normal flow control
-
-4. **Exception Documentation**
-   - Document which functions throw exceptions
-   - Specify exception safety guarantees
-   - Document exception hierarchies
-
-## Common Pitfalls
-
-1. **Resource Leaks**
-   - Not using RAII
-   - Improper cleanup in catch blocks
-   - Missing try-catch blocks
-
-2. **Exception Safety**
-   - Not providing strong guarantee when possible
-   - Throwing exceptions in destructors
-   - Not handling nested exceptions properly
-
-3. **Design Issues**
-   - Overusing exceptions
-   - Too complex exception hierarchies
-   - Catching too broadly
-
-4. **Performance Considerations**
-   - Exception handling overhead
-   - Too many exception objects
-   - Using exceptions for normal flow control
-
+- [C++ Exceptions](https://en.cppreference.com/w/cpp/language/exceptions)
+- [RAII](https://en.cppreference.com/w/cpp/language/raii)
+- [Exception Safety](https://en.wikipedia.org/wiki/Exception_safety)
+- [Orthodox Canonical Form](https://en.cppreference.com/w/cpp/language/rule_of_three)
+```

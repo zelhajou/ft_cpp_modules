@@ -74,7 +74,30 @@ In an 8-bit fixed-point number with 4 fractional bits, `0.25` would be represent
 
 When combined with the integer part `0101` (5), the fixed-point number `5.25` is represented as `0101.0100`.
 
-## Floating point
+
+
+
+## Exercises details
+
+This module includes the following exercises to help you practice and apply the concepts covered:
+
+1. **Exercise 01: Towards a more useful fixed-point number class**
+   - In this exercise, you will extend the `Fixed` class from Exercise 00 to make it more functional. You will add constructors for integer and floating-point inputs, and methods to convert the fixed-point value back to these types. Additionally, you will overload the insertion (`<<`) operator to allow for easy printing of the fixed-point values.
+
+2. **Exercise 02: Implementing a fixed-point number class with arithmetic operations**
+   - In this exercise, you will implement arithmetic operations for the `Fixed` class, including addition, subtraction, multiplication, and division. You will also add comparison operators to compare fixed-point numbers and test the arithmetic operations with various inputs.
+
+3. **Exercise 03: BSP**
+   - In this exercise, you will implement Binary Space Partitioning (BSP) to create a simple 2D game engine. You will create a BSP tree to partition a 2D space and implement functions to insert and query objects in the space. This exercise will test your understanding of tree data structures and spatial partitioning algorithms.
+
+
+## Resources
+
+- [Ad-hoc Polymorphism](https://www.learncpp.com/cpp-tutorial/overloading-the-assignment-operator/)
+- [Operator Overloading](https://www.learncpp.com/cpp-tutorial/overloading-the-assignment-operator/)
+
+
+### Floating point
 
 ![floating-point-weird](https://github.com/user-attachments/assets/b53c506a-1551-4387-a031-e3258edc2650)
 ![float-gaps](https://github.com/user-attachments/assets/1151fb2f-021b-4698-b3f1-4958b2437cbe)
@@ -93,17 +116,3 @@ When combined with the integer part `0101` (5), the fixed-point number `5.25` is
 ![fixed-point](https://github.com/user-attachments/assets/95ef4e6e-8b51-4473-a108-bc46b1ebeed8)
 
 ![floating-point-alternatives](https://github.com/user-attachments/assets/c3deafb5-b1a8-49cd-9409-51b87808878c)
-
-
-## Exercises
-
-This module includes the following exercises to help you practice and apply the concepts covered:
-
-1. **Exercise 01: Towards a more useful fixed-point number class**
-   - In this exercise, you will extend the `Fixed` class from Exercise 00 to make it more functional. You will add constructors for integer and floating-point inputs, and methods to convert the fixed-point value back to these types. Additionally, you will overload the insertion (`<<`) operator to allow for easy printing of the fixed-point values.
-
-2. **Exercise 02: Implementing a fixed-point number class with arithmetic operations**
-   - In this exercise, you will implement arithmetic operations for the `Fixed` class, including addition, subtraction, multiplication, and division. You will also add comparison operators to compare fixed-point numbers and test the arithmetic operations with various inputs.
-
-3. **Exercise 03: BSP**
-   - In this exercise, you will implement Binary Space Partitioning (BSP) to create a simple 2D game engine. You will create a BSP tree to partition a 2D space and implement functions to insert and query objects in the space. This exercise will test your understanding of tree data structures and spatial partitioning algorithms.
