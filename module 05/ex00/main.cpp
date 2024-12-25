@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 13:45:35 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/23 14:18:48 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/25 13:40:35 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,14 @@ int main()
 {
     std::cout << "\n-------- Test 1: Valid Bureaucrat --------\n";
     try {
-        Bureaucrat bob("Bob", 75);
-        std::cout << bob << std::endl;
-        
+        Bureaucrat sherif("Sherif", 75);
+        std::cout << sherif << std::endl;
         std::cout << "Incrementing grade..." << std::endl;
-        bob.incrementGrade();
-        std::cout << bob << std::endl;
-        
+        sherif.incrementGrade();
+        std::cout << sherif << std::endl;
         std::cout << "Decrementing grade..." << std::endl;
-        bob.decrementGrade();
-        std::cout << bob << std::endl;
+        sherif.decrementGrade();
+        std::cout << sherif << std::endl;
     }
     catch(const std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
@@ -33,17 +31,17 @@ int main()
 
     std::cout << "\n-------- Test 2: Grade Too High --------\n";
     try {
-        Bureaucrat john("John", 0);
-        std::cout << john << std::endl;
+        Bureaucrat sherifa("Sherifa", 0);
+        std::cout << sherifa << std::endl;
     }
     catch(const std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
     }
-
+    
     std::cout << "\n-------- Test 3: Grade Too Low --------\n";
     try {
-        Bureaucrat alice("Alice", 151);
-        std::cout << alice << std::endl;
+        Bureaucrat sara("Sara", 151);
+        std::cout << sara << std::endl;
     }
     catch(const std::exception& e) {
         std::cout << "Exception: " << e.what() << std::endl;
