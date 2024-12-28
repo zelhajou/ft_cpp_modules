@@ -5,13 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 16:31:11 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/23 14:17:51 by zelhajou         ###   ########.fr       */
+/*   Created: 2024/12/25 11:38:47 by zelhajou          #+#    #+#             */
+/*   Updated: 2024/12/25 15:37:22 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
 
 Bureaucrat::Bureaucrat() : _name("default"), _grade(150) {}
 
