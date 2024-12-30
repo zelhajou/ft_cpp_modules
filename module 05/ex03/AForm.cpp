@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 10:18:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/26 16:10:59 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:23:37 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,22 @@ AForm &AForm::operator=(const AForm &src)
     return *this;
 }
 
-const std::string &AForm::getName() const { return _name; }
-bool AForm::getIsSigned() const { return _isSigned; }
-int AForm::getGradeToSign() const { return _gradeToSign; }
-int AForm::getGradeToExecute() const { return _gradeToExecute; }
+const std::string &AForm::getName() const
+{
+    return _name;
+}
+bool AForm::getIsSigned() const
+{
+    return _isSigned;
+}
+int AForm::getGradeToSign() const
+{
+    return _gradeToSign;
+}
+int AForm::getGradeToExecute() const
+{
+    return _gradeToExecute;
+}
 
 void AForm::beSigned(const Bureaucrat &bureaucrat)
 {
@@ -56,12 +68,12 @@ void AForm::checkExecution(const Bureaucrat &executor) const
 
 const char *AForm::GradeTooHighException::what() const throw()
 {
-    return "Grade too high (must be between 1 and 150)";
+    return "Grade too high";
 }
 
 const char *AForm::GradeTooLowException::what() const throw()
 {
-    return "Grade too low (must be between 1 and 150)";
+    return "Grade too low";
 }
 
 const char *AForm::FormNotSignedException::what() const throw()

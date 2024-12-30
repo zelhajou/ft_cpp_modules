@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 11:38:47 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/25 15:37:22 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/29 12:33:11 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ void Bureaucrat::signForm(Form &form)
     }
     catch (const std::exception &e)
     {
-        std::cout << _name << " couldn't sign " << form.getName()
-                  << " because " << e.what() << std::endl;
+        std::cout << _name << " couldn't sign " << form.getName() << " because " << e.what() << std::endl;
     }
 }
 

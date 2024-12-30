@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 16:36:47 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/27 16:47:13 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:30:50 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ void Bureaucrat::signForm(AForm &form)
     }
     catch (const std::exception &e)
     {
-        std::cout << _name << " couldn't sign " << form.getName()
-                  << " because " << e.what() << std::endl;
+        std::cout << _name << " couldn't sign " << form.getName() << " because " << e.what() << std::endl;
     }
 }
 
@@ -82,8 +81,7 @@ void Bureaucrat::executeForm(AForm const &form) const
     }
     catch (const std::exception &e)
     {
-        std::cout << _name << " couldn't execute " << form.getName()
-                  << " because " << e.what() << std::endl;
+        std::cout << _name << " couldn't execute " << form.getName() << " because " << e.what() << std::endl;
     }
 }
 

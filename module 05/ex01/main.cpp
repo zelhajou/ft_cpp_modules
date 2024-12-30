@@ -6,13 +6,12 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 16:33:32 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/25 16:54:32 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:37:48 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
 #include "Form.hpp"
-#include <vector>
 
 int main()
 {
@@ -53,7 +52,7 @@ int main()
 
         std::cout << "\n-------- Test 5: Form Signing (Failure) --------\n";
         Bureaucrat sherifa("Sherifa", 100);
-        Form form5("Classified Document", 20, 10);
+        Form form5("Chahada d'lhayat", 20, 10);
         std::cout << "Before signing:\n"
                   << form5 << std::endl;
         sherifa.signForm(form5);

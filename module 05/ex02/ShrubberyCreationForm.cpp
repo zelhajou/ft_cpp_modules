@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 13:15:21 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/26 13:39:08 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:20:03 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ ShrubberyCreationForm::ShrubberyCreationForm() : AForm("ShrubberyCreation", 145,
 
 ShrubberyCreationForm::ShrubberyCreationForm(const std::string &target) : AForm("ShrubberyCreation", 145, 137), _target(target) {}
 
-ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& src) : AForm(src), _target(src._target) {}
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm &src) : AForm(src), _target(src._target) {}
 
 ShrubberyCreationForm::~ShrubberyCreationForm() {}
 
-ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &src) {
+ShrubberyCreationForm &ShrubberyCreationForm::operator=(const ShrubberyCreationForm &src)
+{
     if (this != &src)
         AForm::operator=(src);
     return *this;
@@ -53,11 +54,11 @@ void ShrubberyCreationForm::execute(Bureaucrat const &executor) const
     outFile << "        ###" << std::endl;
     outFile << "        ###" << std::endl;
     outFile << "        ###" << std::endl;
-    
+
     outFile.close();
 }
 
-const char* ShrubberyCreationForm::FileOpenException::what() const throw()
+const char *ShrubberyCreationForm::FileOpenException::what() const throw()
 {
     return "Could not open file for writing";
 }

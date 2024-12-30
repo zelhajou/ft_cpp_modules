@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 15:47:01 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/25 16:35:59 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/29 15:09:31 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 Form::Form() : _name("default"), _isSigned(false), _gradeToSign(150), _gradeToExecute(150) {}
 
-Form::Form(const std::string &name, int gradeToSign, int gradeToExecute)
-    : _name(name), _isSigned(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute)
+Form::Form(const std::string &name, int gradeToSign, int gradeToExecute) : _name(name), _isSigned(false), _gradeToSign(gradeToSign), _gradeToExecute(gradeToExecute)
 {
     if (gradeToSign < 1 || gradeToExecute < 1)
         throw GradeTooHighException();
@@ -24,9 +23,7 @@ Form::Form(const std::string &name, int gradeToSign, int gradeToExecute)
         throw GradeTooLowException();
 }
 
-Form::Form(const Form &src)
-    : _name(src._name), _isSigned(src._isSigned),
-      _gradeToSign(src._gradeToSign), _gradeToExecute(src._gradeToExecute) {}
+Form::Form(const Form &src) : _name(src._name), _isSigned(src._isSigned), _gradeToSign(src._gradeToSign), _gradeToExecute(src._gradeToExecute) {}
 
 Form::~Form() {}
 
@@ -66,12 +63,12 @@ void Form::beSigned(const Bureaucrat &bureaucrat)
 
 const char *Form::GradeTooHighException::what() const throw()
 {
-    return "Grade too high (must be between 1 and 150)";
+    return "Grade too high";
 }
 
 const char *Form::GradeTooLowException::what() const throw()
 {
-    return "Grade too low (must be between 1 and 150)";
+    return "Grade too low";
 }
 
 std::ostream &operator<<(std::ostream &os, const Form &form)

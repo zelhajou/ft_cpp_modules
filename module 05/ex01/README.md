@@ -180,5 +180,3 @@ void Form::beSigned(const Bureaucrat& b) {
     _isSigned = true;
 }
 ```
-
-

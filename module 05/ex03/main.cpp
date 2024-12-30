@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 17:12:35 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/27 17:12:37 by zelhajou         ###   ########.fr       */
+/*   Updated: 2024/12/30 16:45:01 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,48 +15,61 @@
 
 int main()
 {
-    try {
+    try
+    {
         Intern intern;
-        Bureaucrat bureaucrat("John", 1);
+        Bureaucrat boss("Boss", 1);
 
-        std::cout << "\n-------- Test Valid Form Creation --------\n";
+        std::cout << "\n----- Test 1: Create and execute Shrubbery Creation Form -----\n";
         {
-            AForm* form = intern.makeForm("robotomy request", "Bender");
-            if (form) {
-                bureaucrat.signForm(*form);
-                bureaucrat.executeForm(*form);
+            AForm *form = intern.makeForm("shrubbery creation", "home");
+            if (form)
+            {
+                boss.signForm(*form);
+                boss.executeForm(*form);
                 delete form;
             }
         }
 
-        std::cout << "\n-------- Test All Form Types --------\n";
+        std::cout << "\n----- Test 2: Create and execute Robotomy Request Form -----\n";
         {
-            AForm* shrub = intern.makeForm("shrubbery creation", "Garden");
-            AForm* pres = intern.makeForm("presidential pardon", "Criminal");
-            
-            bureaucrat.signForm(*shrub);
-            bureaucrat.executeForm(*shrub);
-            
-            bureaucrat.signForm(*pres);
-            bureaucrat.executeForm(*pres);
-            
-            delete shrub;
-            delete pres;
-        }
-
-        std::cout << "\n-------- Test Invalid Form Name --------\n";
-        try {
-            AForm* form = intern.makeForm("invalid form", "Target");
-            if (form) {
+            AForm *form = intern.makeForm("robotomy request", "moulinex");
+            if (form)
+            {
+                boss.signForm(*form);
+                boss.executeForm(*form);
                 delete form;
             }
         }
-        catch (std::exception& e) {
-            std::cout << "Exception caught: " << e.what() << std::endl;
+
+        std::cout << "\n----- Test 3: Create and execute Presidential Pardon Form -----\n";
+        {
+            AForm *form = intern.makeForm("presidential pardon", "prisoner");
+            if (form)
+            {
+                boss.signForm(*form);
+                boss.executeForm(*form);
+                delete form;
+            }
+        }
+
+        std::cout << "\n----- Test 4: Try to create an invalid form -----\n";
+        {
+            try
+            {
+                AForm *form = intern.makeForm("invalid form", "target");
+                if (form)
+                    delete form;
+            }
+            catch (std::exception &e)
+            {
+                std::cout << "Error: " << e.what() << std::endl;
+            }
         }
     }
-    catch (std::exception& e) {
-        std::cout << "Unexpected exception: " << e.what() << std::endl;
+    catch (std::exception &e)
+    {
+        std::cout << "Unexpected error: " << e.what() << std::endl;
     }
 
     return 0;
