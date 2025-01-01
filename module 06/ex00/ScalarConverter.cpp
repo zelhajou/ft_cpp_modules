@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 17:22:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/31 19:50:13 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:50:13 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,105 @@ bool ScalarConverter::isDouble(const std::string &literal)
 
     strtod(literal.c_str(), &ptr);
     return (*ptr == '\0');
+}
+
+void ScalarConverter::convertChar(const std::string &literal)
+{
+    char c = literal[0];
+
+    printChar(c);
+    printInt(static_cast<int>(c));
+    printInt(static_cast<float>(c));
+    printDouble(static_cast<double>(c));
+}
+
+void ScalarConverter::convertInt(const std::string &literal)
+{
+    long value = strtol(literal.c_str(), NULL, 10);
+    if (value > std::numeric_limits<int>::max() || value < std::numeric_limits<int>::min())
+    {
+        std::cout << "char: impossible\n";
+        std::cout << "int: impossible\n";
+        std::cout << "float: impossible\n";
+        std::cout << "double: impossible\n";
+        return;
+    }
+
+    int i = static_cast<int>(value);
+    printChar(static_cast<char>(i));
+    printInt(i);
+    printFloat(static_cast<float>(i));
+    printDouble(static_cast<double>(i));
+}
+
+void ScalarConverter::convertFloat(const std::string &literal)
+{
+    float f = 0.0f;
+    if (literal == "nanf" || literal == "+inff" || literal == "-inff")
+    {
+        if (literal == "nanf")
+            f = std::numeric_limits<float>::quiet_NaN();
+        else if (literal == "+inff")
+            f = std::numeric_limits<float>::infinity();
+        else if (literal == "-inff")
+            f = -std::numeric_limits<float>::infinity();
+    }
+    else
+        f = strtof(literal.c_str(), NULL);
+
+    printChar(static_cast<char>(f));
+    printInt(static_cast<int>(f));
+    printFloat(f);
+    printDouble(static_cast<double>(f));
+}
+
+void ScalarConverter::convertDouble(const std::string &literal)
+{
+    double d = 0.0;
+    if (literal == "nan" || literal == "+inf" || literal == "-inf")
+    {
+        if (literal == "nan")
+            d = std::numeric_limits<double>::quiet_NaN();
+        else if (literal == "+inf")
+            d = std::numeric_limits<double>::infinity();
+        else if (literal == "-inf")
+            d = -std::numeric_limits<double>::infinity();
+    }
+    else
+        d = strtod(literal.c_str(), NULL);
+
+    printChar(static_cast<char>(d));
+    printInt(static_cast<int>(d));
+    printFloat(static_cast<float>(d));
+    printDouble(d);
+}
+
+void ScalarConverter::printChar(char value)
+{
+    std::cout << "char: ";
+    if (std::isprint(value))
+        std::cout << "'" << value << "'" << std::endl;
+    else
+        std::cout << "Non displayable" << std::endl;
+}
+
+void ScalarConverter::printInt(int value)
+{
+    std::cout << "int: " << value << std::endl;
+}
+
+void ScalarConverter::printFloat(float value)
+{
+    std::cout << "float: " << value;
+    if (value == static_cast<int>(value))
+        std::cout << ".0";
+    std::cout << "f" << std::endl;
+}
+
+void ScalarConverter::printDouble(double value)
+{
+    std::cout << "double: " << value;
+    if (value == static_cast<int>(value))
+        std::cout << ".0";
+    std::cout << std::endl;
 }

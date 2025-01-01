@@ -6,12 +6,12 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 17:09:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2024/12/31 17:19:35 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/01 17:45:29 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SCALARCONVERTER_HPP
-#define SCALARCONVERTER_HP
+#define SCALARCONVERTER_HPP
 
 #include <string>
 #include <iostream>
