@@ -179,49 +179,7 @@ Key Concepts:
    - When working with legacy APIs
    - When const-correctness is broken
 
-### Safety Guidelines
-1. Prefer static_cast to C-style casts
-2. Use dynamic_cast when type safety is uncertain
-3. Avoid reinterpret_cast when possible
-4. Consider const_cast a design smell
 
-### Error Handling
-1. Check dynamic_cast results
-2. Handle numeric conversion overflow
-3. Validate pointer conversions
-4. Use try-catch for reference casts
+## Resources
 
-## Common Pitfalls
-
-1. Undefined Behavior:
-   - Modifying const objects
-   - Invalid pointer conversions
-   - Breaking type aliasing rules
-
-2. Performance Issues:
-   - Excessive dynamic_cast usage
-   - Unnecessary type conversions
-   - RTTI overhead
-
-3. Type Safety:
-   - Unsafe downcasting
-   - Improper pointer conversions
-   - Ignoring const correctness
-
-## Testing Strategies
-
-1. Edge Cases:
-   - Null pointers
-   - Invalid conversions
-   - Type limits
-   - Special values
-
-2. Type Combinations:
-   - All scalar types
-   - Inheritance hierarchies
-   - Const/non-const versions
-
-3. Error Conditions:
-   - Failed conversions
-   - Invalid inputs
-   - Memory management
+- [Type Casting and Type Conversion in Cpp](https://www.naukri.com/code360/library/type-casting-and-type-conversion-in-cpp)

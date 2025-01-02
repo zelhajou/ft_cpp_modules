@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 17:22:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/01 17:50:13 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/02 17:57:23 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void ScalarConverter::convertChar(const std::string &literal)
 void ScalarConverter::convertInt(const std::string &literal)
 {
     long value = strtol(literal.c_str(), NULL, 10);
+
     if (value > std::numeric_limits<int>::max() || value < std::numeric_limits<int>::min())
     {
         std::cout << "char: impossible\n";
@@ -114,6 +115,7 @@ void ScalarConverter::convertInt(const std::string &literal)
 void ScalarConverter::convertFloat(const std::string &literal)
 {
     float f = 0.0f;
+
     if (literal == "nanf" || literal == "+inff" || literal == "-inff")
     {
         if (literal == "nanf")
@@ -135,6 +137,7 @@ void ScalarConverter::convertFloat(const std::string &literal)
 void ScalarConverter::convertDouble(const std::string &literal)
 {
     double d = 0.0;
+
     if (literal == "nan" || literal == "+inf" || literal == "-inf")
     {
         if (literal == "nan")
