@@ -30,7 +30,7 @@ Let me explain the core concepts behind Exercise 01: Serialization.
 ```cpp
 uintptr_t serialize(Data* ptr)
 {
-    return reinterpret_cast<uintptr_t>(ptr);  // Convert pointer to integer
+    return reinterpret_cast<uintptr_t>(ptr);
 }
 ```
 
@@ -38,7 +38,7 @@ uintptr_t serialize(Data* ptr)
 ```cpp
 Data* deserialize(uintptr_t raw)
 {
-    return reinterpret_cast<Data*>(raw);  // Convert integer back to pointer
+    return reinterpret_cast<Data*>(raw);
 }
 ```
 

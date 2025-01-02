@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 18:37:50 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/01 18:37:58 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/02 20:28:31 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int main()
 
     delete base;
 
-    // Test with explicit types
     std::cout << "\nTesting explicit types:" << std::endl;
 
     Base *a = new A();
@@ -48,6 +47,14 @@ int main()
     std::cout << "Type C - Reference identification: ";
     identify(*c);
     delete c;
+
+    std::cout << "\nTesting invalid types:" << std::endl;
+    Base *invalid = new Base();
+    std::cout << "Invalid type - Pointer identification: ";
+    identify(invalid);
+    std::cout << "Invalid type - Reference identification: ";
+    identify(*invalid);
+    delete invalid;
 
     return 0;
 }

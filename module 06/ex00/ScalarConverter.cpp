@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 17:22:51 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/02 17:57:23 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/02 18:33:05 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void ScalarConverter::convertChar(const std::string &literal)
 
     printChar(c);
     printInt(static_cast<int>(c));
-    printInt(static_cast<float>(c));
+    printFloat(static_cast<float>(c));
     printDouble(static_cast<double>(c));
 }
 
@@ -128,8 +128,19 @@ void ScalarConverter::convertFloat(const std::string &literal)
     else
         f = strtof(literal.c_str(), NULL);
 
-    printChar(static_cast<char>(f));
-    printInt(static_cast<int>(f));
+    {
+        if (std::isnan(f) || std::isinf(f))
+            std::cout << "char: impossible\n";
+        else
+            printChar(static_cast<char>(f));
+    }
+
+    {
+        if (std::isnan(f) || std::isinf(f) || f > std::numeric_limits<int>::max() || f < std::numeric_limits<int>::min())
+            std::cout << "int: impossible\n";
+        else
+            printInt(static_cast<int>(f));
+    }
     printFloat(f);
     printDouble(static_cast<double>(f));
 }
@@ -150,8 +161,19 @@ void ScalarConverter::convertDouble(const std::string &literal)
     else
         d = strtod(literal.c_str(), NULL);
 
-    printChar(static_cast<char>(d));
-    printInt(static_cast<int>(d));
+    {
+        if (std::isnan(d) || std::isinf(d))
+            std::cout << "char: impossible\n";
+        else
+            printChar(static_cast<char>(d));
+    }
+
+    {
+        if (std::isnan(d) || std::isinf(d) || d > std::numeric_limits<int>::max() || d < std::numeric_limits<int>::min())
+            std::cout << "int: impossible\n";
+        else
+            printInt(static_cast<int>(d));
+    }
     printFloat(static_cast<float>(d));
     printDouble(d);
 }
