@@ -168,4 +168,7 @@ public:
 };
 ```
 
+## References
 
+- [C++ Templates](https://en.cppreference.com/w/cpp/language/templates)
+- [Template Specialization](https://www.geeksforgeeks.org/template-specialization-c/)

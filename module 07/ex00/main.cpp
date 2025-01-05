@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 21:21:25 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/01 21:21:33 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/03 14:35:06 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 int main(void)
 {
-    // Test with integers
     int a = 2;
     int b = 3;
 
@@ -27,9 +26,8 @@ int main(void)
 
     std::cout << "\n";
 
-    // Test with strings
-    std::string c = "chaine1";
-    std::string d = "chaine2";
+    std::string c = "Hello!";
+    std::string d = "Hola!";
 
     std::cout << "Before swap: c = " << c << ", d = " << d << std::endl;
     ::swap(c, d);
@@ -39,7 +37,6 @@ int main(void)
 
     std::cout << "\n";
 
-    // Test with floating point numbers
     float e = 42.42f;
     float f = 42.43f;
 

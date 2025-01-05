@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 21:46:55 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/01 21:47:00 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:20:49 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,19 @@ int main()
 {
     try
     {
-        // Test empty array
         std::cout << "Testing empty array:" << std::endl;
         Array<int> empty;
         std::cout << "Empty array size: " << empty.size() << std::endl;
 
-        // Test array with size
         std::cout << "\nTesting array with size:" << std::endl;
         Array<int> numbers(5);
         std::cout << "Array size: " << numbers.size() << std::endl;
 
-        // Fill array
         for (unsigned int i = 0; i < numbers.size(); i++)
         {
             numbers[i] = i * 2;
         }
 
-        // Print array
         std::cout << "Array contents: ";
         for (unsigned int i = 0; i < numbers.size(); i++)
         {
@@ -41,7 +37,6 @@ int main()
         }
         std::cout << std::endl;
 
-        // Test copy constructor
         std::cout << "\nTesting copy constructor:" << std::endl;
         Array<int> copy(numbers);
         std::cout << "Copy array size: " << copy.size() << std::endl;
@@ -52,7 +47,6 @@ int main()
         }
         std::cout << std::endl;
 
-        // Modify original array and show that copy is independent
         numbers[0] = 100;
         std::cout << "\nAfter modifying original array:" << std::endl;
         std::cout << "Original array: ";
@@ -68,7 +62,6 @@ int main()
         }
         std::cout << std::endl;
 
-        // Test assignment operator
         std::cout << "\nTesting assignment operator:" << std::endl;
         Array<int> assigned = numbers;
         std::cout << "Assigned array size: " << assigned.size() << std::endl;
@@ -79,7 +72,6 @@ int main()
         }
         std::cout << std::endl;
 
-        // Test out of bounds exception
         std::cout << "\nTesting out of bounds exception:" << std::endl;
         try
         {
@@ -90,7 +82,6 @@ int main()
             std::cout << "Exception caught: " << e.what() << std::endl;
         }
 
-        // Test with different type
         std::cout << "\nTesting with string type:" << std::endl;
         Array<std::string> strings(3);
         strings[0] = "Hello";

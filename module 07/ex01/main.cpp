@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 21:30:24 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/01 21:30:33 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:06:24 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void incrementElement(T& x)
 
 int main()
 {
-    // Test with integers
     std::cout << "Testing with integers:" << std::endl;
     int intArray[] = {1, 2, 3, 4, 5};
     size_t intLength = sizeof(intArray) / sizeof(int);
@@ -42,7 +41,7 @@ int main()
     iter(intArray, intLength, printElement<int>);
     std::cout << std::endl << std::endl;
 
-    // Test with doubles
+
     std::cout << "Testing with doubles:" << std::endl;
     double doubleArray[] = {1.1, 2.2, 3.3, 4.4, 5.5};
     size_t doubleLength = sizeof(doubleArray) / sizeof(double);
@@ -57,7 +56,6 @@ int main()
     iter(doubleArray, doubleLength, printElement<double>);
     std::cout << std::endl << std::endl;
 
-    // Test with strings
     std::cout << "Testing with strings:" << std::endl;
     std::string strArray[] = {"Hello", "World", "!"};
     size_t strLength = sizeof(strArray) / sizeof(std::string);
@@ -66,7 +64,6 @@ int main()
     iter(strArray, strLength, printElement<std::string>);
     std::cout << std::endl;
 
-    // Test with const array
     std::cout << "\nTesting with const array:" << std::endl;
     const int constArray[] = {10, 20, 30, 40, 50};
     size_t constLength = sizeof(constArray) / sizeof(int);

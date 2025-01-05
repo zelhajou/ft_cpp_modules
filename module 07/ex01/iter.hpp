@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/01 21:30:11 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/01 21:30:13 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:07:24 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void iter(T* array, size_t length, void (*func)(T&))
         func(array[i]);
 }
 
-// Overload for const arrays
 template<typename T>
 void iter(const T* array, size_t length, void (*func)(const T&))
 {
