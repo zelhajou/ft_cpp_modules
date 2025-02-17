@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 21:02:48 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/06 18:16:15 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/02/16 21:36:18 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,20 @@
 // Orthodox Canonical Form Implementation
 Span::Span() : _N(0) {}
 
-Span::Span(unsigned int N) : _N(N) {
+Span::Span(unsigned int N) : _N(N)
+{
     // Reserve capacity to avoid reallocations
     _numbers.reserve(N);
 }
 
-Span::Span(const Span& other) : _N(other._N), _numbers(other._numbers) {}
+Span::Span(const Span &other) : _N(other._N), _numbers(other._numbers) {}
 
 Span::~Span() {}
 
-Span& Span::operator=(const Span& other) {
-    if (this != &other) {
+Span &Span::operator=(const Span &other)
+{
+    if (this != &other)
+    {
         _N = other._N;
         _numbers = other._numbers;
     }
@@ -33,13 +36,15 @@ Span& Span::operator=(const Span& other) {
 }
 
 // Member Functions Implementation
-void Span::addNumber(int num) {
+void Span::addNumber(int num)
+{
     if (_numbers.size() >= _N)
         throw std::out_of_range("Span is full");
     _numbers.push_back(num);
 }
 
-unsigned int Span::shortestSpan() const {
+unsigned int Span::shortestSpan() const
+{
     if (_numbers.size() <= 1)
         throw std::runtime_error("Not enough numbers to find span");
 
@@ -49,7 +54,8 @@ unsigned int Span::shortestSpan() const {
 
     // Find minimum difference between adjacent elements
     unsigned int minSpan = UINT_MAX;
-    for (size_t i = 1; i < sorted.size(); ++i) {
+    for (size_t i = 1; i < sorted.size(); ++i)
+    {
         unsigned int span = static_cast<unsigned int>(sorted[i] - sorted[i - 1]);
         minSpan = std::min(minSpan, span);
     }
@@ -57,12 +63,13 @@ unsigned int Span::shortestSpan() const {
     return minSpan;
 }
 
-unsigned int Span::longestSpan() const {
+unsigned int Span::longestSpan() const
+{
     if (_numbers.size() <= 1)
         throw std::runtime_error("Not enough numbers to find span");
 
     // Find min and max elements
-    std::pair<std::vector<int>::const_iterator, std::vector<int>::const_iterator> result = 
+    std::pair<std::vector<int>::const_iterator, std::vector<int>::const_iterator> result =
         std::minmax_element(_numbers.begin(), _numbers.end());
 
     return static_cast<unsigned int>(*result.second - *result.first);
