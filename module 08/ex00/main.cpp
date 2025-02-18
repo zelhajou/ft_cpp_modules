@@ -6,7 +6,7 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 17:38:28 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/01/06 19:58:43 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/02/18 22:14:44 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,63 +14,52 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <deque>
 
 template <typename T>
-void printContainer(T &container, const std::string &name)
+void printContainer(T &container)
 {
-    std::cout << name << " contents: ";
-    for (typename T::iterator it = container.begin(); it != container.end(); ++it)
-    {
-        std::cout << *it << " ";
-    }
-    std::cout << std::endl;
+	for (typename T::iterator it = container.begin(); it != container.end(); it++)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
 }
 
 int main()
 {
-    std::cout << "\n=== Testing with vector ===" << std::endl;
-    std::vector<int> vec;
-    for (int i = 1; i <= 5; i++)
-        vec.push_back(i * 10);
+	std::vector<int> vec;
+	std::list<int> lst;
 
-    printContainer(vec, "Vector");
+	for (int i = 1; i <= 10; i++)
+	{
+		vec.push_back(i * 10);
+		lst.push_back(i * 5);
+	}
 
-    try
-    {
-        std::vector<int>::iterator it = easyfind(vec, 30);
-        std::cout << "Found value " << *it << " at position: " << std::distance(vec.begin(), it) << std::endl;
-    }
-    catch (const std::exception &e)
-    {
-        std::cout << "Error: " << e.what() << std::endl;
-    }
+	printContainer(vec);
+	printContainer(lst);
 
-    try
-    {
-        easyfind(vec, 42);
-    }
-    catch (const std::exception &e)
-    {
-        std::cout << "Error: " << e.what() << std::endl;
-    }
-
-    std::cout << "\n=== Testing with list ===" << std::endl;
-    std::list<int> lst;
-    for (int i = 1; i <= 5; i++)
-        lst.push_back(i * -5);
-
-    printContainer(lst, "List");
+	try
+	{
+        std::vector<int>::iterator it = easyfind(vec, 10);
+        std::cout << "Found: " << *it << std::endl;
+        std::list<int>::iterator it2 = easyfind(lst, 50);
+        std::cout << "Found: " << *it2 << std::endl;
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
 
     try
-    {
-        std::list<int>::iterator it = easyfind(lst, -15);
-        std::cout << "Found value " << *it << " at position: " << std::distance(lst.begin(), it) << std::endl;
-    }
-    catch (const std::exception &e)
-    {
-        std::cout << "Error: " << e.what() << std::endl;
-    }
-
-    return 0;
+	{
+        std::vector<int>::iterator it = easyfind(vec, 500);
+        std::cout << "Found: " << *it << std::endl;
+	}
+    catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	
+	return 0;
 }
