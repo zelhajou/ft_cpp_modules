@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/05 17:05:15 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/02/18 22:23:42 by zelhajou         ###   ########.fr       */
+/*   Created: 2025/01/07 15:22:07 by zelhajou          #+#    #+#             */
+/*   Updated: 2025/02/16 18:46:34 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <stdexcept>
 
 template <typename T>
-//  The typename keyword tells the compiler that T::iterator is a type. Without it, the compiler might think it's a static member.
 typename T::iterator easyfind(T &container, int value)
 {
 	typename T::iterator it = std::find(container.begin(), container.end(), value);
