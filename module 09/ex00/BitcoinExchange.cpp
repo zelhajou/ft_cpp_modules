@@ -141,5 +141,16 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
 
 void BitcoinExchange::processInputFile(const std::string &filename) const
 {
-    std::ifstream file
+    std::ifstream file(filename.c_str());
+    int lineCount = 1;
+
+    if (!file.is_open())
+        throw std::runtime_error("Error: Could not open file.");
+    
+    std::string line;
+    if (!std::getline(file, line))
+        throw std::runtime_error("Error: empty input file");
+    
+    if (line != "date | value")
+        throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid input format");
 }
