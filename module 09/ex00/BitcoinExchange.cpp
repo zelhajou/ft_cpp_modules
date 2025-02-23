@@ -81,7 +81,6 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
 
     if (!std::getline(ss, dateHeaderCol, ',') || !std::getline(ss, valueHeaderCol, ','))
         throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV header");
-
     if (std::getline(ss, line))
         throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": More than 2 fields");
         
@@ -90,9 +89,9 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
 
     if (dateHeaderCol != "date" || valueHeaderCol != "exchange_rate")
         throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV header");
-
+    
     while (std::getline(file, line))
-    {
+    {   
         lineCount++;
         
         if (line.empty())
@@ -106,7 +105,7 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
             throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV line");
         
         if (std::getline(ss, line))
-            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": More than 2 fields");
+            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": more than 2 fields");
         
         date = trim(date);
         valueStr = trim(valueStr);
@@ -120,7 +119,27 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
         if (!isValidDate(date))
             throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid date => " + date);
        
-
-
+        try
+        {
+            size_t processed;
+            float value = std::stof(valueStr, &processed);
+            if (processed != valueStr.length())
+                throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid value => " + valueStr);
+            if (value < 0)
+                throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": negative value => " + valueStr);
+            std::cout << value << std::endl;
+            _database[date] = value;
+        }
+        catch (const std::invalid_argument &e)
+        {
+            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid value => " + valueStr);
+        }
     }
+    if (_database.empty())
+        throw std::runtime_error("Error: empty database");
+}
+
+void BitcoinExchange::processInputFile(const std::string &filename) const
+{
+    std::ifstream file
 }

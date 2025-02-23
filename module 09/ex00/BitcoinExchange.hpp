@@ -22,6 +22,8 @@ class BitcoinExchange
         std::string trim(const std::string &str) const;
         bool isValidDate(const std::string &date) const;
         bool isValidValue(const float value) const;
+        void processInputFile(const std::string &filename) const;
+
 
 };
 
