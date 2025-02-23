@@ -23,8 +23,8 @@ class BitcoinExchange
         bool isValidDate(const std::string &date) const;
         bool isValidValue(const float value) const;
         void processInputFile(const std::string &filename) const;
-
-
+        void displayDataBase() const;
+        float getExchangeRate(const std::string &date) const;
 };
 
 #endif

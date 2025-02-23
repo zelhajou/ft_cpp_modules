@@ -8,6 +8,9 @@ int main()
     try
     {
         exchange.loadDataBase("data.csv");
+        // exchange.displayDataBase();
+        exchange.processInputFile("input.txt");
+
     }
     catch (const std::exception &e)
     {

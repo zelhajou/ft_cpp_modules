@@ -127,7 +127,6 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
                 throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid value => " + valueStr);
             if (value < 0)
                 throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": negative value => " + valueStr);
-            std::cout << value << std::endl;
             _database[date] = value;
         }
         catch (const std::invalid_argument &e)
@@ -139,10 +138,29 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
         throw std::runtime_error("Error: empty database");
 }
 
+void BitcoinExchange::displayDataBase() const
+{
+    const std::map<std::string, float>::const_iterator end = _database.end();
+
+    for (std::map<std::string, float>::const_iterator it = _database.begin(); it != end; ++it)
+        std::cout << it->first << " => " << it->second << std::endl;
+}
+
+float BitcoinExchange::getExchangeRate(const std::string &date) const
+{
+    if (_database.empty())
+        throw std::runtime_error("Error: empty database");
+    
+    std::map<std::string, float>::const_iterator it = _database.upper_bound(date);
+    if (it == _database.begin())
+        throw std::runtime_error("Error: no exchange rate found for this date");
+    --it;
+    return it->second;
+}
+
 void BitcoinExchange::processInputFile(const std::string &filename) const
 {
     std::ifstream file(filename.c_str());
-    int lineCount = 1;
 
     if (!file.is_open())
         throw std::runtime_error("Error: Could not open file.");
@@ -152,5 +170,58 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
         throw std::runtime_error("Error: empty input file");
     
     if (line != "date | value")
-        throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid input format");
+        throw std::runtime_error("Error: invalid input file header");
+
+    while (std::getline(file, line))
+    {
+        if (line.empty())
+            continue;
+    
+        size_t pipePos = line.find('|');
+        if (pipePos == std::string::npos)
+        {
+            std::cout << "Error: bad input => " << line << std::endl;
+            continue;
+        }
+
+        std::string date = trim(line.substr(0, pipePos));
+        std::string valueStr = trim(line.substr(pipePos + 1));
+
+        if (date.empty() || valueStr.empty())
+        {
+            std::cout << "Error: bad input => " << line << std::endl;
+            continue;
+        }
+
+        if (!isValidDate(date))
+        {
+            std::cout << "Error: bad input => " << date << std::endl;
+            continue;
+        }
+
+        try {
+            size_t processed;
+            float value = std::stof(valueStr, &processed);
+            if (processed != valueStr.length())
+                throw std::runtime_error("Error: bad value => " + valueStr);
+            
+            if (!isValidValue(value))
+            {
+                if (value < 0)
+                    std::cout << "Error: not a positive number." << std::endl;
+                else
+                    std::cout << "Error: too large a number." << std::endl;
+                continue;
+            }
+
+            float exchangeRate = getExchangeRate(date);
+            std::cout << date << " => " << value << " = " << value * exchangeRate << std::endl;
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "Error: bad value => " << valueStr << std::endl;
+        }
+       
+    }
+
 }
