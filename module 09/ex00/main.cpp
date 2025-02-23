@@ -2,7 +2,6 @@
 
 int main()
 {
-
     BitcoinExchange exchange;
 
     try
@@ -10,7 +9,6 @@ int main()
         exchange.loadDataBase("data.csv");
         // exchange.displayDataBase();
         exchange.processInputFile("input.txt");
-
     }
     catch (const std::exception &e)
     {
