@@ -55,7 +55,7 @@ bool BitcoinExchange::isValidDate(const std::string &date) const
 
     if (day > daysInMonth[month])
         return false;
- 
+
     return true;
 }
 
@@ -83,17 +83,17 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
         throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV header");
     if (std::getline(ss, line))
         throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": More than 2 fields");
-        
+
     dateHeaderCol = trim(dateHeaderCol);
     valueHeaderCol = trim(valueHeaderCol);
 
     if (dateHeaderCol != "date" || valueHeaderCol != "exchange_rate")
         throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV header");
-    
+
     while (std::getline(file, line))
-    {   
+    {
         lineCount++;
-        
+
         if (line.empty())
             continue;
 
@@ -103,10 +103,10 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
 
         if (!std::getline(ss, date, ',') || !std::getline(ss, valueStr, ','))
             throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV line");
-        
+
         if (std::getline(ss, line))
             throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": more than 2 fields");
-        
+
         date = trim(date);
         valueStr = trim(valueStr);
 
@@ -118,7 +118,7 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
 
         if (!isValidDate(date))
             throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid date => " + date);
-       
+
         try
         {
             size_t processed;
@@ -150,7 +150,7 @@ float BitcoinExchange::getExchangeRate(const std::string &date) const
 {
     if (_database.empty())
         throw std::runtime_error("Error: empty database");
-    
+
     std::map<std::string, float>::const_iterator it = _database.upper_bound(date);
     if (it == _database.begin())
         throw std::runtime_error("Error: no exchange rate found for this date");
@@ -164,11 +164,11 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
 
     if (!file.is_open())
         throw std::runtime_error("Error: Could not open file.");
-    
+
     std::string line;
     if (!std::getline(file, line))
         throw std::runtime_error("Error: empty input file");
-    
+
     if (line != "date | value")
         throw std::runtime_error("Error: invalid input file header");
 
@@ -176,7 +176,7 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
     {
         if (line.empty())
             continue;
-    
+
         size_t pipePos = line.find('|');
         if (pipePos == std::string::npos)
         {
@@ -199,12 +199,13 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
             continue;
         }
 
-        try {
+        try
+        {
             size_t processed;
             float value = std::stof(valueStr, &processed);
             if (processed != valueStr.length())
                 throw std::runtime_error("Error: bad value => " + valueStr);
-            
+
             if (!isValidValue(value))
             {
                 if (value < 0)
@@ -221,7 +222,5 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
         {
             std::cout << "Error: bad value => " << valueStr << std::endl;
         }
-       
     }
-
 }

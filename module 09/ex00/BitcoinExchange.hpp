@@ -7,24 +7,24 @@
 #include <fstream>
 #include <sstream>
 
-class BitcoinExchange 
+class BitcoinExchange
 {
-    private:
-        std::map<std::string, float> _database;
+private:
+    std::map<std::string, float> _database;
 
-    public:
-        BitcoinExchange();
-        BitcoinExchange(const BitcoinExchange &other);
-        BitcoinExchange &operator=(const BitcoinExchange &other);
-        ~BitcoinExchange();
-    
-        void loadDataBase(const std::string &filename);
-        std::string trim(const std::string &str) const;
-        bool isValidDate(const std::string &date) const;
-        bool isValidValue(const float value) const;
-        void processInputFile(const std::string &filename) const;
-        void displayDataBase() const;
-        float getExchangeRate(const std::string &date) const;
+public:
+    BitcoinExchange();
+    BitcoinExchange(const BitcoinExchange &other);
+    BitcoinExchange &operator=(const BitcoinExchange &other);
+    ~BitcoinExchange();
+
+    void loadDataBase(const std::string &filename);
+    std::string trim(const std::string &str) const;
+    bool isValidDate(const std::string &date) const;
+    bool isValidValue(const float value) const;
+    void processInputFile(const std::string &filename) const;
+    void displayDataBase() const;
+    float getExchangeRate(const std::string &date) const;
 };
 
 #endif
