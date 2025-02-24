@@ -8,7 +8,7 @@ OBJS = $(SRCS:.cpp=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) BitcoinExchange.hpp
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
 
 clean:
