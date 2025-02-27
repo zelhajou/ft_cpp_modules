@@ -6,12 +6,13 @@
 /*   By: zelhajou <zelhajou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 00:21:29 by zelhajou          #+#    #+#             */
-/*   Updated: 2025/02/19 00:52:09 by zelhajou         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:01:22 by zelhajou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Span.hpp"
 #include <iostream>
+#include <ctime>
 
 int main()
 {
