@@ -1,12 +1,9 @@
 #include "BitcoinExchange.hpp"
+#include <cstdlib>  // For atoi and atof
 
-BitcoinExchange::BitcoinExchange()
-{
-}
+BitcoinExchange::BitcoinExchange() {}
 
-BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _database(other._database)
-{
-}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : _database(other._database) {}
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
@@ -15,8 +12,13 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
     return *this;
 }
 
-BitcoinExchange::~BitcoinExchange()
+BitcoinExchange::~BitcoinExchange() {}
+
+std::string BitcoinExchange::intToString(int num) const
 {
+    std::stringstream ss;
+    ss << num;
+    return ss.str();
 }
 
 std::string BitcoinExchange::trim(const std::string &str) const
@@ -25,7 +27,6 @@ std::string BitcoinExchange::trim(const std::string &str) const
     if (first == std::string::npos)
         return "";
     size_t last = str.find_last_not_of(" \t");
-
     return str.substr(first, last - first + 1);
 }
 
@@ -41,9 +42,9 @@ bool BitcoinExchange::isValidDate(const std::string &date) const
     if (date.length() != 10 || date[4] != '-' || date[7] != '-')
         return false;
 
-    int year = std::stoi(date.substr(0, 4));
-    int month = std::stoi(date.substr(5, 2));
-    int day = std::stoi(date.substr(8, 2));
+    int year = atoi(date.substr(0, 4).c_str());
+    int month = atoi(date.substr(5, 2).c_str());
+    int day = atoi(date.substr(8, 2).c_str());
 
     if (year < 2009 || month < 1 || month > 12 || day < 1 || day > 31)
         return false;
@@ -80,15 +81,15 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
     std::string valueHeaderCol;
 
     if (!std::getline(ss, dateHeaderCol, ',') || !std::getline(ss, valueHeaderCol, ','))
-        throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV header");
+        throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid CSV header");
     if (std::getline(ss, line))
-        throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": More than 2 fields");
+        throw std::runtime_error("Error at line " + intToString(lineCount) + ": More than 2 fields");
 
     dateHeaderCol = trim(dateHeaderCol);
     valueHeaderCol = trim(valueHeaderCol);
 
     if (dateHeaderCol != "date" || valueHeaderCol != "exchange_rate")
-        throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV header");
+        throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid CSV header");
 
     while (std::getline(file, line))
     {
@@ -102,10 +103,10 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
         std::string valueStr;
 
         if (!std::getline(ss, date, ',') || !std::getline(ss, valueStr, ','))
-            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid CSV line");
+            throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid CSV line");
 
         if (std::getline(ss, line))
-            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": more than 2 fields");
+            throw std::runtime_error("Error at line " + intToString(lineCount) + ": more than 2 fields");
 
         date = trim(date);
         valueStr = trim(valueStr);
@@ -117,21 +118,21 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
         }
 
         if (!isValidDate(date))
-            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid date => " + date);
+            throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid date => " + date);
 
         try
         {
-            size_t processed;
-            float value = std::stof(valueStr, &processed);
-            if (processed != valueStr.length())
-                throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid value => " + valueStr);
+            if (valueStr.find_first_not_of("0123456789.-") != std::string::npos)
+                throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid value => " + valueStr);                
+            float value = atof(valueStr.c_str());
+            
             if (value < 0)
-                throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": negative value => " + valueStr);
+                throw std::runtime_error("Error at line " + intToString(lineCount) + ": negative value => " + valueStr);
             _database[date] = value;
         }
-        catch (const std::invalid_argument &e)
+        catch (const std::exception &e)
         {
-            throw std::runtime_error("Error at line " + std::to_string(lineCount) + ": invalid value => " + valueStr);
+            throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid value => " + valueStr);
         }
     }
     if (_database.empty())
@@ -201,10 +202,9 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
 
         try
         {
-            size_t processed;
-            float value = std::stof(valueStr, &processed);
-            if (processed != valueStr.length())
-                throw std::runtime_error("Error: bad value => " + valueStr);
+            if (valueStr.find_first_not_of("0123456789.-") != std::string::npos)
+                throw std::runtime_error("Invalid value format");                
+            float value = atof(valueStr.c_str());
 
             if (!isValidValue(value))
             {

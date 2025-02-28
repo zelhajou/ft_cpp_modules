@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <cstdlib>
 
 class BitcoinExchange
 {
@@ -20,6 +21,7 @@ public:
 
     void loadDataBase(const std::string &filename);
     std::string trim(const std::string &str) const;
+    std::string intToString(int num) const;
     bool isValidDate(const std::string &date) const;
     bool isValidValue(const float value) const;
     void processInputFile(const std::string &filename) const;
