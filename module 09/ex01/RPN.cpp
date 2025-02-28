@@ -1,41 +1,58 @@
 #include "RPN.hpp"
 
-RPN::RPN() {
-}
+RPN::RPN() {}
 
-RPN::RPN(const RPN &other) {
-    _stack = other._stack;
-}
+RPN::RPN(const RPN &other) : _stack(other._stack) {}
 
-RPN &RPN::operator=(const RPN &other) {
-    if (this != &other) {
+RPN &RPN::operator=(const RPN &other)
+{
+    if (this != &other)
         _stack = other._stack;
-    }
     return *this;
 }
 
-RPN::~RPN() {
-}
+RPN::~RPN() {}
 
-bool RPN::isOperator(const std::string &token) const {
-    if (token == "+" || token == "-" || token == "*" || token == "/") {
-        return true;
-    }
-    return false;
-}
-
-bool RPN::isNumber(const std::string &token) const
+bool RPN::isOperator(const char token) const
 {
-    if (token.empty() || token.size() > 1) {
-        return false;
-    }
-    if (token[0] >= '0' && token[0] <= '9') {
-        return true;
-    }
-    return false;
+    return token == '+' || token == '-' || token == '*' || token == '/';
 }
 
-void PRN::per
+bool RPN::isNumber(const char token) const
+{
+    return token >= '0' && token <= '9';
+}
+
+void RPN::performOperation(const char op)
+{
+    if (_stack.size() < 2)
+        throw std::runtime_error("Error");
+
+    int b = _stack.top();
+    _stack.pop();
+    int a = _stack.top();
+    _stack.pop();
+
+    switch (op)
+    {
+    case '+':
+        _stack.push(a + b);
+        break;
+    case '-':
+        _stack.push(a - b);
+        break;
+    case '*':
+        _stack.push(a * b);
+        break;
+    case '/':
+        if (b == 0)
+            throw std::runtime_error("Error");
+        _stack.push(a / b);
+        break;
+    default:
+        throw std::runtime_error("Error");
+    }
+}
 
 int RPN::evaluate(const std::string &expression)
 {
@@ -44,23 +61,30 @@ int RPN::evaluate(const std::string &expression)
 
     while (iss >> token)
     {
-        if (isNumber(token))
+        if (token.empty())
+            continue;
+
+        if (token.length() != 1)
+            throw std::runtime_error("Error");
+
+        char c = token[0];
+
+        if (isNumber(c))
         {
-            int num = token[0] - '0';
-            if (num >= 10)
-                throw std::runtime_error("Error");
-            _stack.push(num);
+            _stack.push(c - '0');
         }
-        else if (isOperator(token)) {
-            performOperation(token);
+        else if (isOperator(c))
+        {
+            performOperation(c);
         }
-        else {
+        else
+        {
             throw std::runtime_error("Error");
         }
     }
 
     if (_stack.size() != 1)
         throw std::runtime_error("Error");
-    
+
     return _stack.top();
 }
