@@ -12,6 +12,11 @@ class BitcoinExchange
 {
 private:
     std::map<std::string, float> _database;
+    std::string trim(const std::string &str) const;
+    std::string intToString(int num) const;
+    bool isValidDate(const std::string &date) const;
+    bool isValidValue(const float value) const;
+    float getExchangeRate(const std::string &date) const;
 
 public:
     BitcoinExchange();
@@ -20,13 +25,7 @@ public:
     ~BitcoinExchange();
 
     void loadDataBase(const std::string &filename);
-    std::string trim(const std::string &str) const;
-    std::string intToString(int num) const;
-    bool isValidDate(const std::string &date) const;
-    bool isValidValue(const float value) const;
     void processInputFile(const std::string &filename) const;
-    void displayDataBase() const;
-    float getExchangeRate(const std::string &date) const;
 };
 
 #endif

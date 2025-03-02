@@ -11,7 +11,6 @@ int main(int argc, char **argv)
     try
     {
         exchange.loadDataBase("data.csv");
-        // exchange.displayDataBase();
         exchange.processInputFile(argv[1]);
     }
     catch (const std::exception &e)

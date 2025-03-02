@@ -1,5 +1,5 @@
 #include "BitcoinExchange.hpp"
-#include <cstdlib>  // For atoi and atof
+#include <cstdlib>
 
 BitcoinExchange::BitcoinExchange() {}
 
@@ -137,14 +137,6 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
     }
     if (_database.empty())
         throw std::runtime_error("Error: empty database");
-}
-
-void BitcoinExchange::displayDataBase() const
-{
-    const std::map<std::string, float>::const_iterator end = _database.end();
-
-    for (std::map<std::string, float>::const_iterator it = _database.begin(); it != end; ++it)
-        std::cout << it->first << " => " << it->second << std::endl;
 }
 
 float BitcoinExchange::getExchangeRate(const std::string &date) const
