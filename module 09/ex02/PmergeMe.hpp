@@ -10,6 +10,7 @@
 #include <sstream>
 
 #include <climits>
+#include <iomanip>
 
 class PmergeMe
 {
@@ -19,8 +20,11 @@ private:
     std::list<int> _lst;
 
     bool isValidNumber(const char *str);
-    std::string containerToStr(const std::vector<int> &container);
-    
+    void displaySequence(const std::vector<int>& seq, const std::string& label);
+
+    void sortVector();
+    void sortList();
+
 public:
     PmergeMe();
     PmergeMe(const PmergeMe &other);
@@ -29,8 +33,6 @@ public:
 
     bool parseInput(int argc, char **argv);
     void sort();
-    
-    
 };
 
 #endif

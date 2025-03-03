@@ -54,20 +54,59 @@ bool PmergeMe::parseInput(int argc, char **argv)
     return true;
 }
 
-std::string PmergeMe::containerToStr(const std::vector<int> &container)
+void PmergeMe::displaySequence(const std::vector<int>& seq, const std::string& label)
 {
-    std::stringstream ss;
-
-    for (size_t i = 0; i < container.size(); i++)
+    std::cout << label << ": ";
+    
+    for (size_t i = 0; i < seq.size(); i++)
     {
         if (i > 0)
-            ss << " ";
-        ss << container[i];
+            std::cout << " ";
+        std::cout << seq[i];
     }
     
-    return ss.str();
+    std::cout << std::endl;
 }
 
+void PmergeMe::sortVector()
+{
+    if (_vec.size() <= 1)
+        return;
+    
+    // Step 1
+    bool hasStraggler = false;
+    int straggler = 0;
+
+    if (_vec.size() % 2 != 0)
+    {
+        hasStraggler = true;
+        straggler = _vec.back();
+        _vec.pop_back();
+    }
+
+    // Step 2
+    std::vector<std::pair<int, int> > pairs;
+    for (size_t i = 0; i < _vec.size(); i += 2)
+    {
+        int first = _vec[i];
+        int second =_vec[i + 1];
+
+        if (first > second)
+            pairs.push_back(std::make_pair(first, second));
+        else
+            pairs.push_back(std::make_pair(second, first));
+    }
+
+    // step 3
+    std::vector<int> mainChain;
+    for (size_t i = 0; i < pairs.size(); i++) {
+        mainChain.push_back(pairs[i].first);
+    }
+
+    // 
+
+
+}
 
 void PmergeMe::sort()
 {
@@ -85,9 +124,14 @@ void PmergeMe::sort()
     clock_t lstEnd = clock();
     double lstTime = static_cast<double>(lstEnd - lstStart) / CLOCKS_PER_SEC * 1000000;
 
-    std::cout << "Before: " << containerToStr(original) << std::endl;
-    std::cout << "After: " << containerToStr(_vec) << std::endl;
+    displaySequence(original, "Before");
+    displaySequence(_vec, "After");
 
-    (void)vecTime;
-    (void)lstTime;
+    std::cout << "Time to process a range of " << _vec.size()
+            << " elements with std::vector : " << std::fixed << std::setprecision(5)
+            << vecTime << " us" << std::endl;
+
+    std::cout << "Time to process a range of " << _lst.size()
+            << " elements with std::list : " << std::fixed << std::setprecision(5)
+            << lstTime << " us" << std::endl;
 }
