@@ -84,7 +84,7 @@ void PmergeMe::sortVector()
         _vec.pop_back();
     }
 
-    // Step 2
+    // Step 2 - create pairs of numbers and sort them
     std::vector<std::pair<int, int> > pairs;
     for (size_t i = 0; i < _vec.size(); i += 2)
     {
@@ -103,9 +103,15 @@ void PmergeMe::sortVector()
         mainChain.push_back(pairs[i].first);
     }
 
-    // 
-
-
+     // Step 4: Recursively sort main chain
+    if (mainChain.size() > 1) {
+        _vec = mainChain;
+        sortVector();
+        mainChain = _vec;
+    }
+    
+    // Step 5: Insert smaller elements
+    _vec.clear();
 }
 
 void PmergeMe::sort()
@@ -114,7 +120,7 @@ void PmergeMe::sort()
 
     // sort vector
     clock_t vecStart = clock();
-    // mergeInsertSortVector();
+    sortVector();
     clock_t vecEnd = clock();
     double vecTime = static_cast<double>(vecEnd - vecStart) / CLOCKS_PER_SEC * 1000000;
 
