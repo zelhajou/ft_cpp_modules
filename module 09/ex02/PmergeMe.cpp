@@ -68,6 +68,23 @@ void PmergeMe::displaySequence(const std::vector<int>& seq, const std::string& l
     std::cout << std::endl;
 }
 
+
+std::vector<int> PmergeMe::getJacobsthalSequence(int n)
+{
+    std::vector<int> jacobsthal;
+
+    jacobsthal.push_back(0);
+    jacobsthal.push_back(1);
+
+    for (int i = 2; i < n; i++)
+    {
+       int next = jacobsthal[i - 1] + 2 * jacobsthal[i - 2];
+       jacobsthal.push_back(next);
+    }
+
+    return jacobsthal;
+}
+
 void PmergeMe::sortVector()
 {
     if (_vec.size() <= 1)
@@ -103,14 +120,14 @@ void PmergeMe::sortVector()
         mainChain.push_back(pairs[i].first);
     }
 
-     // Step 4: Recursively sort main chain
+     // Step 4
     if (mainChain.size() > 1) {
         _vec = mainChain;
         sortVector();
         mainChain = _vec;
     }
-    
-    // Step 5: Insert smaller elements
+
+    // Step 5 - Insert the smaller element
     _vec.clear();
 }
 
