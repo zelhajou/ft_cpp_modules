@@ -99,7 +99,7 @@ These numbers help determine insertion positions in an optimized way.
     - (8, 6) → **8** is larger than **6**, so it stays as [8, 6].
 
   - **Form new main chain** after sorting the pairs: [9, 7], [8, 6] → Merge them into: [9, 8, 7, 6]
-
+  
 - Now, recursively apply sorting until only one element remains:
   - **Pair up**: [9, 8]
   - **Sort**: [8, 9]
@@ -126,59 +126,7 @@ These numbers help determine insertion positions in an optimized way.
 
 This is where the Ford-Johnson algorithm truly shines. Instead of inserting pend elements in a simple order, we use sequence based on [Jacobsthal numbers](https://en.wikipedia.org/wiki/Jacobsthal_number).
 
-The Jacobsthal sequence is a sequence of numbers that can be used to minimize the number of comparisons needed to sort a sequence. The sequence is defined as follows:
+**Why Jacobsthal?**
 
-- J(0) = 0
-- J(1) = 1
-- J(n) = J(n-1) + 2 * J(n-2)
+The Ford-Johnson algorithm (merge-insert sort) uses the Jacobsthal sequence because it provides an optimal or near-optimal insertion order when inserting elements into a sorted sequence. The key insight is that by inserting elements according to this sequence, we can minimize the total number of comparisons needed.
 
-```cpp
-The first few Jacobsthal numbers are: 0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525, 699051, 1398101, 2796203, 5592405, 11184811, 22369621, 44739243, 89478485,
-
-```
-
-#### **How the sequence is used for insertion**
-
-Until now, we have a sorted main chain and a pend chain.
-
-- A main chain for sorted elements: [a₁, a₂, a₃, a₄, ...] => [3, 5, 9, 8] 
-- A set of remaining elements to insert: [b₁, b₂, b₃, b₄, ...] => [1, 4, 2, 6]
-
-The key insight is that we need to determine the optimal order to insert these elements into the main chain. The Jacobsthal sequence provides this order.
-
-**Generating the Jacobsthal Sequence**
-
-For n elements to insert, we:
-
-1. Look at the relevant Jacobsthal numbers (up to the first J(k) ≥ n)
-2. Use these to create the insertion sequence
-3. Between cosecutive Jacobsthal numbers, we insert in descending order
-
-**Example 1: Inserting 5 Elements**
-
-With 5 elements to insert, we need Jacobsthal numbers up to 5:
-J(0)=0, J(1)=1, J(2)=1, J(3)=3, J(4)=5
-Now let's construct the insertion sequence:
-
-Take the Jacobsthal numbers that aren't 0: [1, 1, 3, 5]
-Remove duplicates: [1, 3, 5]
-Now fill in the gaps in descending order:
-
-Between 1 and 3: [2]
-Between 3 and 5: [4]
-
-Final insertion sequence: [1, 3, 2, 5, 4]
-This means we insert element b₁ first, then b₃, then b₂, then b₅, and finally b₄.
-
-**Example 2: Inserting 7 Elements**
-
-With 7 elements, we need Jacobsthal numbers up to at least 7:
-J(0)=0, J(1)=1, J(2)=1, J(3)=3, J(4)=5, J(5)=11
-Taking the relevant numbers (up to 7): [1, 3, 5]
-Filling in the gaps in descending order:
-
-Between 1 and 3: [2]
-Between 3 and 5: [4]
-After 5 (up to 7): [7, 6]
-
-Final insertion sequence: [1, 3, 2, 5, 4, 7, 6]

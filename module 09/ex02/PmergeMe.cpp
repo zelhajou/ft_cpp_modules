@@ -84,6 +84,38 @@ std::vector<int> PmergeMe::getJacobsthalSequence(int n) {
     return jacobsthal;
 }
 
+std::vector<int> PmergeMe::calculateInsertionOrder(std::vector<int>& jacobSeq, size_t pairsSize)
+{
+    std::vector<int> insertionOrder;
+    std::vector<bool> inserted(pairsSize, false);
+    inserted[0] = true; // Mark first pair as already processed
+    
+    for (size_t i = 1; i < jacobSeq.size() && jacobSeq[i] < (int)pairsSize; i++) {
+        int idx = jacobSeq[i];
+        if (!inserted[idx]) {
+            insertionOrder.push_back(idx);
+            inserted[idx] = true;
+        }
+        
+        // Fill in between Jacobsthal numbers in descending order
+        for (int j = idx - 1; j > jacobSeq[i-1]; j--) {
+            if (j >= 0 && j < (int)pairsSize && !inserted[j]) {
+                insertionOrder.push_back(j);
+                inserted[j] = true;
+            }
+        }
+    }
+    
+    // Add any remaining indices
+    for (size_t i = 1; i < pairsSize; i++) {
+        if (!inserted[i])
+            insertionOrder.push_back(i);
+    }
+    
+    return insertionOrder;
+}
+
+
 void PmergeMe::sortVector() {
     if (_vec.size() <= 1)
         return;
@@ -98,7 +130,7 @@ void PmergeMe::sortVector() {
         _vec.pop_back();
     }
     
-    // Step 2: Form pairs from consecutive elements
+    // Step 2: Form pairs
     std::vector<std::pair<int, int> > pairs;
     for (size_t i = 0; i < _vec.size(); i += 2) {
         int first = _vec[i];
@@ -143,33 +175,9 @@ void PmergeMe::sortVector() {
         
         std::vector<int> jacobSeq = getJacobsthalSequence(jacobsthalSize);
         
-        // Calculate insertion order
-        std::vector<int> insertionOrder;
-        std::vector<bool> inserted(pairs.size(), false);
-        inserted[0] = true; // Mark first pair as already processed
-        
-        for (size_t i = 1; i < jacobSeq.size() && jacobSeq[i] < (int)pairs.size(); i++) {
-            int idx = jacobSeq[i];
-            if (!inserted[idx]) {
-                insertionOrder.push_back(idx);
-                inserted[idx] = true;
-            }
-            
-            // Fill in between Jacobsthal numbers in descending order
-            for (int j = idx - 1; j > jacobSeq[i-1]; j--) {
-                if (j >= 0 && j < (int)pairs.size() && !inserted[j]) {
-                    insertionOrder.push_back(j);
-                    inserted[j] = true;
-                }
-            }
-        }
-        
-        // Add any remaining indices
-        for (size_t i = 1; i < pairs.size(); i++) {
-            if (!inserted[i])
-                insertionOrder.push_back(i);
-        }
-        
+        // Calculate insertion order using our new helper function
+        std::vector<int> insertionOrder = calculateInsertionOrder(jacobSeq, pairs.size());
+
         // Insert elements according to determined order
         for (size_t i = 0; i < insertionOrder.size(); i++) {
             int idx = insertionOrder[i];

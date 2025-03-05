@@ -22,7 +22,7 @@ private:
     bool isValidNumber(const char *str);
     void displaySequence(const std::vector<int>& seq, const std::string& label);
     std::vector<int> getJacobsthalSequence(int n);
-    
+    std::vector<int> calculateInsertionOrder(std::vector<int>& jacobSeq, size_t pairsSize);
 
     void sortVector();
     void sortList();
