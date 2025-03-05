@@ -54,81 +54,146 @@ bool PmergeMe::parseInput(int argc, char **argv)
     return true;
 }
 
-void PmergeMe::displaySequence(const std::vector<int>& seq, const std::string& label)
+void PmergeMe::displaySequence(const std::vector<int> &seq, const std::string &label)
 {
     std::cout << label << ": ";
-    
+
     for (size_t i = 0; i < seq.size(); i++)
     {
         if (i > 0)
             std::cout << " ";
         std::cout << seq[i];
     }
-    
+
     std::cout << std::endl;
 }
 
 
-std::vector<int> PmergeMe::getJacobsthalSequence(int n)
-{
+std::vector<int> PmergeMe::getJacobsthalSequence(int n) {
     std::vector<int> jacobsthal;
-
+    
     jacobsthal.push_back(0);
-    jacobsthal.push_back(1);
-
-    for (int i = 2; i < n; i++)
-    {
-       int next = jacobsthal[i - 1] + 2 * jacobsthal[i - 2];
-       jacobsthal.push_back(next);
+    if (n > 0)
+        jacobsthal.push_back(1);
+    
+    for (int i = 2; i <= n; i++) {
+        int next = jacobsthal[i-1] + 2 * jacobsthal[i-2];
+        jacobsthal.push_back(next);
     }
-
+    
     return jacobsthal;
 }
 
-void PmergeMe::sortVector()
-{
+void PmergeMe::sortVector() {
     if (_vec.size() <= 1)
         return;
     
-    // Step 1
+    // Step 1: Handle odd-sized array
     bool hasStraggler = false;
     int straggler = 0;
-
-    if (_vec.size() % 2 != 0)
-    {
+    
+    if (_vec.size() % 2 != 0) {
         hasStraggler = true;
         straggler = _vec.back();
         _vec.pop_back();
     }
-
-    // Step 2 - create pairs of numbers and sort them
+    
+    // Step 2: Form pairs from consecutive elements
     std::vector<std::pair<int, int> > pairs;
-    for (size_t i = 0; i < _vec.size(); i += 2)
-    {
+    for (size_t i = 0; i < _vec.size(); i += 2) {
         int first = _vec[i];
-        int second =_vec[i + 1];
-
-        if (first > second)
-            pairs.push_back(std::make_pair(first, second));
-        else
-            pairs.push_back(std::make_pair(second, first));
+        int second = _vec[i + 1];
+        pairs.push_back(std::make_pair(first, second));
     }
-
-    // step 3
+    
+    // Step 3: Sort elements within pairs (larger element first)
+    for (size_t i = 0; i < pairs.size(); i++) {
+        if (pairs[i].first < pairs[i].second)
+            std::swap(pairs[i].first, pairs[i].second);
+    }
+    
+    // Step 4: Extract main chain (larger elements)
     std::vector<int> mainChain;
     for (size_t i = 0; i < pairs.size(); i++) {
         mainChain.push_back(pairs[i].first);
     }
-
-     // Step 4
+    
+    // Step 5: Recursively sort main chain
     if (mainChain.size() > 1) {
         _vec = mainChain;
         sortVector();
         mainChain = _vec;
     }
-
-    // Step 5 - Insert the smaller element
-    _vec.clear();
+    
+    // Step 6: Initialize result with the first element from main chain
+    std::vector<int> result;
+    if (!mainChain.empty())
+        result.push_back(mainChain[0]);
+    
+    // Step 7: Insert first smaller element
+    if (!pairs.empty())
+        result.insert(result.begin(), pairs[0].second);
+    
+    // Step 8: For remaining elements, use Jacobsthal sequence
+    if (pairs.size() > 1) {
+        // Generate Jacobsthal sequence
+        int jacobsthalSize = 3;
+        while (getJacobsthalSequence(jacobsthalSize).back() < (int)pairs.size())
+            jacobsthalSize++;
+        
+        std::vector<int> jacobSeq = getJacobsthalSequence(jacobsthalSize);
+        
+        // Calculate insertion order
+        std::vector<int> insertionOrder;
+        std::vector<bool> inserted(pairs.size(), false);
+        inserted[0] = true; // Mark first pair as already processed
+        
+        for (size_t i = 1; i < jacobSeq.size() && jacobSeq[i] < (int)pairs.size(); i++) {
+            int idx = jacobSeq[i];
+            if (!inserted[idx]) {
+                insertionOrder.push_back(idx);
+                inserted[idx] = true;
+            }
+            
+            // Fill in between Jacobsthal numbers in descending order
+            for (int j = idx - 1; j > jacobSeq[i-1]; j--) {
+                if (j >= 0 && j < (int)pairs.size() && !inserted[j]) {
+                    insertionOrder.push_back(j);
+                    inserted[j] = true;
+                }
+            }
+        }
+        
+        // Add any remaining indices
+        for (size_t i = 1; i < pairs.size(); i++) {
+            if (!inserted[i])
+                insertionOrder.push_back(i);
+        }
+        
+        // Insert elements according to determined order
+        for (size_t i = 0; i < insertionOrder.size(); i++) {
+            int idx = insertionOrder[i];
+            
+            // Insert main chain element if not already in result
+            if (std::find(result.begin(), result.end(), mainChain[idx]) == result.end()) {
+                std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), mainChain[idx]);
+                result.insert(pos, mainChain[idx]);
+            }
+            
+            // Insert smaller element
+            std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), pairs[idx].second);
+            result.insert(pos, pairs[idx].second);
+        }
+    }
+    
+    // Step 9: Insert straggler if exists
+    if (hasStraggler) {
+        std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), straggler);
+        result.insert(pos, straggler);
+    }
+    
+    // Step 10: Set final result
+    _vec = result;
 }
 
 void PmergeMe::sort()
@@ -151,10 +216,10 @@ void PmergeMe::sort()
     displaySequence(_vec, "After");
 
     std::cout << "Time to process a range of " << _vec.size()
-            << " elements with std::vector : " << std::fixed << std::setprecision(5)
-            << vecTime << " us" << std::endl;
+              << " elements with std::vector : " << std::fixed << std::setprecision(5)
+              << vecTime << " us" << std::endl;
 
     std::cout << "Time to process a range of " << _lst.size()
-            << " elements with std::list : " << std::fixed << std::setprecision(5)
-            << lstTime << " us" << std::endl;
+              << " elements with std::list : " << std::fixed << std::setprecision(5)
+              << lstTime << " us" << std::endl;
 }

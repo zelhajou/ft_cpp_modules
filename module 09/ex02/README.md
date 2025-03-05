@@ -3,7 +3,7 @@
 PmergeMe is an implementation of the Ford-Johnson merge-insert sort algorithm, a sorting technique that aims to minimize the number of comparisons.
 
 
-**Exercise Requirements**
+## **Exercise Requirements**
 
 1. Creating a program named PmergeMe
 2. Taking a positive integer sequence as input
@@ -16,77 +16,113 @@ PmergeMe is an implementation of the Ford-Johnson merge-insert sort algorithm, a
     - Time taken using the second container
 6. Handling at least 3000 differnet integers
 
-**The Ford-Johnson Algorithm**
+## **The Ford-Johnson Algorithm**
 
 The Ford-Johnson algorithm, also known as merge-insertion sort, is a comparison-based sorting algorithm designed to minimize the number of comparisons needed to sort a sequence, approaching the theoretical minimum possible.
 
-**The Algorithm in Simple Terms**
+1. Pair Up Elements:
+    - The elements are divided into pairs (if there's an odd number, one element is left alone).
+    - Each pair is compared, and the larger element is selected.
+2. Sort the Larger Elements:
+    - The larger elements from each pair are sorted recursively, forming a sorted list.
 
-Imagine you have a deck of cards that you want to sort. The Ford-Johnson algorithm works as follows:
+3. Insert the Remaining Elements:
+    - The smaller elements from the pairs (and the leftover element, if any) are inserted into the sorted list one by one.
+    - To minimize comparisons, the insertions follow a special order and use the Jacobsthal sequence.
 
-1. Group the cards into pairs.
-2. For each pair, put the larger card on top
-3. Take all the top cards and repeat the process until you have a single card left. (Recursively useing the same process)
-4. Strategically insert the botton cars into the sorted top carsds to create a sorted deck.
+## **The Algorithm in Simple Terms**
 
-The "magic" happens in step 4, where we dont just insert cards randomly - we use a special sequence to minimize comparisons.
+Imagine you have 8 people of different heights, and you want to sort them from shortest to tallest:
 
-**Step-by-Step Breakdown**
+1. Pair them up and compare their heights.
+2. Winners go into a "Champion's List" (Main Chain), losers go into a "Second Chance List" (Pend Chain).
+3. Recursively sort the Champion's List until you have a single element.
+4. Insert the elements from the Pend Chain into the Champion's List in a strategic order to minimize comparisons.
+5. You now have a sorted list!
 
-[3, 1 , 4, 5, 9, 2, 6, 8]
-
-**Step 1**: Pair Formation
-
-Group elements into pairs:
-    
-- Pair 1: [3, 1]
-- Pair 2: [4, 5]
-- Pair 3: [9, 2]
-- Pair 4: [6, 8]
-
-If we have an odd numbers of elements, the last one be set aside as a "straggler."
-
-**Step 2**: Sort Each Pair
-The larger element is placed on top:
-
-- Pair 1: [3, 1] -> no change needed since 3 > 1
-- Pair 2: [4, 5] -> swap to [5, 4] since 5 > 4
-- Pair 3: [9, 2] -> no change needed since 9 > 2
-- Pair 4: [6, 8] -> Swap to [8, 6] since 8 > 6
-
-Now our pairs are ([3, 1], [5, 4], [9, 2], [8, 6])
-
-**Step 3**: Form and Sort Main Chain
-Extract the top elements and form a new chain:
-
-- Main Chain: [3, 5, 9, 8]
-
-We recursively sort this main chain using the same algorithm until we have a single element left.
-
-1. Pair up: [3, 5], [9, 8]
-2. Sort: [5, 3], [9, 8]
-3. Form main chain: [5, 9]
-4. Sort recursively:
-    - Pair up: [5, 9]
-    - Sort: [9, 5]
-    - Form main   chain: [9]
-    - Base case reached - we have a single element sorted
-    - Inset the smaller element into the main chain: [5, 9] -> [5, 9]
-5. Insert the last element into the main chain: [3, 5, 9 ,8] -> [3, 5, 9, 8]
-
-**Step 4**: Created Pend Chain
-The, "pend" chain consists of the smaller elements from each original pair, keeping track of which main chain element they're associated with:
-
-- 1 (associated with 3)
-- 4 (associated with 5)
-- 2 (associated with 9)
-- 6 (associated with 8)
-
-- Main Chain: [3, 5, 9, 8]
-- Pend Chain: [1, 4, 2, 6]
+The "magic" happens in step 4, where we dont just insert cards randomly - we use a special sequence to minimize comparisons. (Jacobsthal numbers)
 
 
-**Step 5**: Strategic Insertion
+## **Understanding Jacobsthal Numbers**
+
+Jacobsthal numbers follow the recurrence relation:
+
+$$
+J_n = J_{n-1} + 2J_{n-2}
+$$
+
+With the first few values:
+
+$$
+J_0 = 0, \quad J_1 = 1, \quad J_2 = 1, \quad J_3 = 3, \quad J_4 = 5, \quad J_5 = 11, \quad J_6 = 21, \dots
+$$
+
+These numbers help determine insertion positions in an optimized way.
+
+
+##  **Example: Sorting the list [9, 3, 7, 1, 8, 4, 6, 2, 5]**
+
+### **Step 1: Pairing the Elements**
+
+- First, we group the elements into pairs:
+  - (9, 3)
+  - (7, 1)
+  - (8, 4)
+  - (6, 2)
+  - (5) – This element remains unpaired since the list has an odd number of elements.
+
+### **Step 2: Compare Each Pair**
+
+- Next, we compare each pair and determine the smaller and larger elements:
+  - (9, 3) → **9** is larger, **3** is smaller.
+  - (7, 1) → **7** is larger, **1** is smaller.
+  - (8, 4) → **8** is larger, **4** is smaller.
+  - (6, 2) → **6** is larger, **2** is smaller.
+  - (5) → This element remains as it is because it’s unpaired.
+
+- This results in:
+  - **Larger elements**: [9, 7, 8, 6]
+  - **Smaller elements + unpaired**: [3, 1, 4, 2, 5]
+
+### **Step 3: Form and Sort the Main Chain**
+
+- Now, we form the main chain by sorting the **larger elements**:
+  - Main Chain: [9, 7, 8, 6]
+  
+- We recursively apply the same sorting process to the **main chain** (i.e., [9, 7, 8, 6]) until we have a single element:
+  - **Pair up** the elements:
+    - [9, 7]
+    - [8, 6]
+  
+  - **Sort** each pair:
+    - (9, 7) → **9** is larger than **7**, so it stays as [9, 7].
+    - (8, 6) → **8** is larger than **6**, so it stays as [8, 6].
+
+  - **Form new main chain** after sorting the pairs: [9, 7], [8, 6] → Merge them into: [9, 8, 7, 6]
+
+- Now, recursively apply sorting until only one element remains:
+  - **Pair up**: [9, 8]
+  - **Sort**: [8, 9]
+  - **Form main chain**: [8, 9]
+  
+- Now we merge the remaining element from the previous step (6):
+  - Inserting 6 into [8, 9] → Result: [6, 8, 9]
+
+- After sorting and merging, we get the fully sorted **Main Chain**: [6, 7, 8, 9]
+
+### **Step 4: Created Pend Chain**
+
+- The "pend" chain consists of the smaller elements from each original pair, with each element being associated with a specific element from the main chain:
+  - **1** is associated with **3**
+  - **4** is associated with **5**
+  - **2** is associated with **6**
+  - **6** is associated with **8**
+
+- Now, we have:
+  - **Main Chain**: [6, 7, 8, 9]
+  - **Pend Chain**: [1, 4, 2, 6]
+
+### **Step 5: Merging the Main Chain and Pend Chain**
 
 This is where the Ford-Johnson algorithm truly shines. Instead of inserting pend elements in a simple order, we use sequence based on [Jacobsthal numbers](https://en.wikipedia.org/wiki/Jacobsthal_number).
 
@@ -99,18 +135,9 @@ The Jacobsthal sequence is a sequence of numbers that can be used to minimize th
 ```cpp
 The first few Jacobsthal numbers are: 0, 1, 1, 3, 5, 11, 21, 43, 85, 171, 341, 683, 1365, 2731, 5461, 10923, 21845, 43691, 87381, 174763, 349525, 699051, 1398101, 2796203, 5592405, 11184811, 22369621, 44739243, 89478485,
 
-// Each number (beyond the first two) is formed by taking the previous number and adding twice the number before that.
 ```
-- J(0) = 0
-- J(1) = 1
-- J(2) = 1
-- J(3) = 3
-- J(4) = 5
-- J(5) = 11
-- J(6) = 21
-- J(7) = 43
 
-**How the sequence is used for insertion**
+#### **How the sequence is used for insertion**
 
 Until now, we have a sorted main chain and a pend chain.
 
