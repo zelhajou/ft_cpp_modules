@@ -126,7 +126,15 @@ These numbers help determine insertion positions in an optimized way.
 
 This is where the Ford-Johnson algorithm truly shines. Instead of inserting pend elements in a simple order, we use sequence based on [Jacobsthal numbers](https://en.wikipedia.org/wiki/Jacobsthal_number).
 
+
+- The Jacobsthal sequence is a specific integer sequence defined as:
+  - `J(0)` = `0`
+  - `J(1)` = `1`
+  - `J(n)` = `J(n-1) + 2*J(n-2) for n ≥ 2`
+
+So the sequence begins: `0, 1, 1, 3, 5, 11, 21, 43, 85, 171, ...`
+
 **Why Jacobsthal?**
 
-The Ford-Johnson algorithm (merge-insert sort) uses the Jacobsthal sequence because it provides an optimal or near-optimal insertion order when inserting elements into a sorted sequence. The key insight is that by inserting elements according to this sequence, we can minimize the total number of comparisons needed.
+The Ford-Johnson algorith`m (merge-insert sort) uses the Jacobsthal sequence because it provides an optimal or near-optimal insertion order when inserting elements into a sorted sequence. The key insight is that by inserting elements according to this sequence, we can minimize the total number of comparisons needed.
 

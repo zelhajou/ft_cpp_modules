@@ -155,6 +155,7 @@ void PmergeMe::sortVector() {
         _vec = mainChain;
         sortVector();
         mainChain = _vec;
+        _vec.clear();
     }
     
     // Step 6: Initialize result with the first element from main chain
