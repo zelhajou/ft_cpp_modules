@@ -20,15 +20,25 @@ PmergeMe is an implementation of the Ford-Johnson merge-insert sort algorithm, a
 
 The Ford-Johnson algorithm, also known as merge-insertion sort, is a comparison-based sorting algorithm designed to minimize the number of comparisons needed to sort a sequence, approaching the theoretical minimum possible.
 
-1. Pair Up Elements:
+🔹 **Key Idea**: Instead of comparing elements sequentially (like in Bubble Sort or Selection Sort), Merge-Insertion Sort first groups elements into pairs, sorts each pair, then merges them using a smart insertion technique.
+
+1. Pairing Elements:
     - The elements are divided into pairs (if there's an odd number, one element is left alone).
     - Each pair is compared, and the larger element is selected.
 2. Sort the Larger Elements:
     - The larger elements from each pair are sorted recursively, forming a sorted list.
-
 3. Insert the Remaining Elements:
     - The smaller elements from the pairs (and the leftover element, if any) are inserted into the sorted list one by one.
     - To minimize comparisons, the insertions follow a special order and use the Jacobsthal sequence.
+
+
+⏳ Time Complexity:
+
+- Best-case: O(n log n)
+- Worst-case: O(n log n) (fewer comparisons than Merge Sort)
+- Space Complexity: O(n) (additional space for storing pairs)
+
+
 
 ## **The Algorithm in Simple Terms**
 
