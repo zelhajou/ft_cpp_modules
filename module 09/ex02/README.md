@@ -318,14 +318,14 @@ Now we use the Jacobsthal sequence to determine the insertion order. The algorit
 
 Let's trace through this logic:
 
-- First, we look at Jacobsthal number at index 1, which is 1
-- We add 1 to our insertion order: [1]
-- There are no indices between 1 and the previous Jacobsthal number (0)
-- Next, we look at Jacobsthal number at index 2, which is also 1
+- First, we look at Jacobsthal number at index `1`, which is `1`
+- We add `1` to our insertion order: [1]
+- There are no indices between `1` and the previous Jacobsthal number (`0`)
+- Next, we look at Jacobsthal number at index `2`, which is also `1`
 - It's already been processed, so we skip it
 - No new indices to check
-- Next, we look at Jacobsthal number at index 3, which is 3
-- This is greater than our pairs size (2), so we don't use it
+- Next, we look at Jacobsthal number at index `3`, which is `3`
+- This is greater than our pairs size (`2`), so we don't use it
 
 So our insertion order becomes just [1].
 
@@ -337,9 +337,9 @@ for (size_t i = 1; i < pairs.size(); i++) {
 }
 ```
 
-This code makes sure any indices that weren't covered by the Jacobsthal sequence get added to the end of our insertion order. In our example, since pairs.size() is 2 and we've only processed index 1, there are no additional indices to add.
+This code makes sure any indices that weren't covered by the Jacobsthal sequence get added to the end of our insertion order. In our example, since `pairs.size()` is `2` and we've only processed index `1`, there are no additional indices to add.
 
-So our final insertion order is [1], meaning we'll insert pair at index 1 next.
+So our final insertion order is `[1]`, meaning we'll insert pair at index `1` next.
 
 #### 8.3: Insert Elements According to the Determined Order
 
@@ -374,7 +374,7 @@ for (size_t i = 0; i < insertionOrder.size(); i++) {
 
 **Inserting the Main Chain Element**
 
-First, we check if the main chain element at index 1 is already in our result:
+First, we check if the main chain element at index `1` is already in our result:
 
 ```cpp
 if (std::find(result.begin(), result.end(), mainChain[idx]) == result.end())
@@ -407,4 +407,12 @@ result.insert(pos, mainChain[idx]);
 
 **Inserting the Smaller Element**
 
+```cpp
+std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), pairs[idx].second);
+```
+
+- `pairs[1].second` is `2` (the smaller element in the second pair)
+- `std::lower_bound` searches through `result` (`[1, 3, 4]`) to find where `2` should go
+- Since `2` is greater than `1` but less than `3`, it returns an iterator pointing to the position of `3` (index 1)
+- So `pos` points to the position of `3`
 
