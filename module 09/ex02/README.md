@@ -546,7 +546,7 @@ Without this strategic ordering, we might end up with worst-case scenarios for b
 ### Step 7: Handle the Straggler Element
 
 Finally, if we had a straggler (odd element), we insert it back into our sorted array:
-```
+```cpp
 if (hasStraggler) {
     std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), straggler);
     result.insert(pos, straggler);
@@ -558,7 +558,7 @@ We use binary search again to find the correct position for the straggler elemen
 ### Step 8: Update the Original Vector
 
 The last step is to update our original vector with the sorted result:
-```
+```cpp
 _vec = result;
 ```
 
