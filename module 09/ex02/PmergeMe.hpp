@@ -2,7 +2,7 @@
 #define PMERGEME_HPP
 
 #include <vector>
-#include <list>
+#include <deque>
 
 #include <iostream>
 #include <ctime>
@@ -17,15 +17,15 @@ class PmergeMe
 
 private:
     std::vector<int> _vec;
-    std::list<int> _lst;
+    std::deque<int> _deq;
 
     bool isValidNumber(const char *str);
-    void displaySequence(const std::vector<int>& seq, const std::string& label);
+    void printSeq(const std::vector<int> &seq, const std::string &label);
     std::vector<int> getJacobsthalSequence(int n);
-    std::vector<int> calculateInsertionOrder(std::vector<int>& jacobSeq, size_t pairsSize);
+    std::vector<int> generateInsertionOrder(std::vector<int> &jacobSeq, size_t pairsSize);
 
     void sortVector();
-    void sortList();
+    void sortDeque();
 
 public:
     PmergeMe();
