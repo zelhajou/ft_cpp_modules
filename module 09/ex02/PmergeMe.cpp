@@ -36,7 +36,7 @@ bool PmergeMe::isValidNumber(const char *str)
     return true;
 }
 
-bool PmergeMe::parseInput(int argc, char **argv)
+bool PmergeMe::parseArgs(int argc, char **argv)
 {
     if (argc < 2)
         return false;
@@ -68,7 +68,7 @@ void PmergeMe::printSeq(const std::vector<int> &seq, const std::string &label)
     std::cout << std::endl;
 }
 
-std::vector<int> PmergeMe::getJacobsthalSequence(int n)
+std::vector<int> PmergeMe::getJacob(int n)
 {
     std::vector<int> jacobsthal;
 
@@ -85,7 +85,7 @@ std::vector<int> PmergeMe::getJacobsthalSequence(int n)
     return jacobsthal;
 }
 
-std::vector<int> PmergeMe::generateInsertionOrder(std::vector<int> &jacobSeq, size_t pairsSize)
+std::vector<int> PmergeMe::getInsertPos(std::vector<int> &jacobSeq, size_t pairsSize)
 {
     std::vector<int> insertionOrder;
     std::vector<bool> inserted(pairsSize, false);
@@ -172,11 +172,11 @@ void PmergeMe::sortVector()
     if (pairs.size() > 1)
     {
         int jacobsthalSize = 3;
-        while (getJacobsthalSequence(jacobsthalSize).back() < (int)pairs.size())
+        while (getJacob(jacobsthalSize).back() < (int)pairs.size())
             jacobsthalSize++;
 
-        std::vector<int> jacobSeq = getJacobsthalSequence(jacobsthalSize);
-        std::vector<int> insertionOrder = generateInsertionOrder(jacobSeq, pairs.size());
+        std::vector<int> jacobSeq = getJacob(jacobsthalSize);
+        std::vector<int> insertionOrder = getInsertPos(jacobSeq, pairs.size());
 
         for (size_t i = 0; i < insertionOrder.size(); i++)
         {
@@ -251,11 +251,11 @@ void PmergeMe::sortDeque()
     if (pairs.size() > 1)
     {
         int jacobsthalSize = 3;
-        while (getJacobsthalSequence(jacobsthalSize).back() < (int)pairs.size())
+        while (getJacob(jacobsthalSize).back() < (int)pairs.size())
             jacobsthalSize++;
 
-        std::vector<int> jacobSeq = getJacobsthalSequence(jacobsthalSize);
-        std::vector<int> insertionOrder = generateInsertionOrder(jacobSeq, pairs.size());
+        std::vector<int> jacobSeq = getJacob(jacobsthalSize);
+        std::vector<int> insertionOrder = getInsertPos(jacobSeq, pairs.size());
 
         for (size_t i = 0; i < insertionOrder.size(); i++)
         {
@@ -292,13 +292,15 @@ void PmergeMe::sort()
     clock_t deqEnd = clock();
     double deqTime = static_cast<double>(deqEnd - deqStart) / CLOCKS_PER_SEC * 1000000;
 
-    // bool isSorted = true;
-    // for (size_t i = 1; i < _vec.size(); i++) {
-    //     if (_vec[i] < _vec[i-1]) {
-    //         isSorted = false;
-    //         break;
-    //     }
-    // }
+    bool isSorted = true;
+    for (size_t i = 1; i < _vec.size(); i++) {
+        if (_vec[i] < _vec[i-1]) {
+            std::cout << _vec[i] << std::endl;
+            std::cout << _vec[i - 1] << std::endl;
+            isSorted = false;
+            break;
+        }
+    }
 
     printSeq(original, "Before");
     printSeq(_vec, "After");

@@ -21,8 +21,8 @@ private:
 
     bool isValidNumber(const char *str);
     void printSeq(const std::vector<int> &seq, const std::string &label);
-    std::vector<int> getJacobsthalSequence(int n);
-    std::vector<int> generateInsertionOrder(std::vector<int> &jacobSeq, size_t pairsSize);
+    std::vector<int> getJacob(int n);
+    std::vector<int> getInsertPos(std::vector<int> &jacobSeq, size_t pairsSize);
 
     void sortVector();
     void sortDeque();
@@ -33,7 +33,7 @@ public:
     PmergeMe &operator=(const PmergeMe &other);
     ~PmergeMe();
 
-    bool parseInput(int argc, char **argv);
+    bool parseArgs(int argc, char **argv);
     void sort();
 };
 

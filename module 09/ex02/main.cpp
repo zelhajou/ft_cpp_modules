@@ -4,7 +4,7 @@ int main(int argc, char **argv)
 {
     PmergeMe sorter;
 
-    if (!sorter.parseInput(argc, argv))
+    if (!sorter.parseArgs(argc, argv))
     {
         std::cout << "Error" << std::endl;
         return 1;
