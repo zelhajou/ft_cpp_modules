@@ -70,111 +70,156 @@ $$
 These numbers help determine insertion positions in an optimized way.
 
 
-##  **Example: Sorting the list `[9, 3, 7, 1, 8, 4, 6, 2, 5]`**
 
-### **Step 1: Pairing the Elements**
 
-- First, we group the elements into pairs:
-  - `(9, 3)`
-  - `(7, 1)`
-  - `(8, 4)`
-  - `(6, 2)`
-  - `(5)` – This element remains unpaired since the list has an odd number of elements.
+## Example: Sorting the list `[9, 3, 7, 1, 8, 4, 6, 2, 5]`
 
-### **Step 2: Compare Each Pair**
+### Step 1: Pairing the Elements
 
-- Next, we compare each pair and determine the smaller and larger elements:
-  - `(9, 3)` → **`9`** is larger, **`3`** is smaller.
-  - `(7, 1)` → **`7`** is larger, **`1`** is smaller.
-  - `(8, 4)` → **`8`** is larger, **`4`** is smaller.
-  - `(6, 2)` → **`6`** is larger, **`2`** is smaller.
-  - `(5)` → This element remains as it is because it’s unpaired.
+First, we identify if we have a straggler (an odd element out). Since our list has 9 elements (odd), we set aside the last element as a straggler:
+- Straggler: `5`
+- Remaining list: `[9, 3, 7, 1, 8, 4, 6, 2]`
 
-- This results in:
-  - **Larger elements**: `[9, 7, 8, 6]`
-  - **Smaller elements + unpaired**: `[3, 1, 4, 2, 5]`
+Now we group the elements into pairs:
+- `(9, 3)`
+- `(7, 1)`
+- `(8, 4)`
+- `(6, 2)`
 
-### **Step 3: Form and Sort the Main Chain**
+### Step 2: Compare Each Pair
 
-- Now, we form the main chain by sorting the **larger elements**:
-  - **Main Chain**: `[9, 7, 8, 6]`
-  
-- We recursively apply the same sorting process to the **main chain** (i.e., `[9, 7, 8, 6]`) until we have a single element:
-  - **Pair up** the elements:
-    - `[9, 7]`
-    - `[8, 6]`
-  
-  - **Sort** each pair:
-    - `(9, 7)` → **`9`** is larger than **`7`**, so it stays as `[9, 7]`.
-    - `(8, 6)` → **`8`** is larger than **`6`**, so it stays as `[8, 6]`.
+For each pair, we identify the larger and smaller element:
+- `(9, 3)` → `9` is larger, `3` is smaller
+- `(7, 1)` → `7` is larger, `1` is smaller
+- `(8, 4)` → `8` is larger, `4` is smaller
+- `(6, 2)` → `6` is larger, `2` is smaller
 
-  - **Form new main chain** after sorting the pairs: `[9, 7]`, `[8, 6]` → Merge them into: `[9, 8, 7, 6]`
-  
-- Now, recursively apply sorting until only one element remains:
-  - **Pair up**: `[9, 8]`
-  - **Sort**: `[8, 9]`
-  - **Form main chain**: `[8, 9]`
-  
-- Now we merge the remaining element from the previous step (`6`):
-  - Inserting `6` into `[8, 9]` → Result: `[6, 8, 9]`
+This gives us:
+- Larger elements (Main Chain candidates): `[9, 7, 8, 6]`
+- Smaller elements (Pend Chain): `[3, 1, 4, 2]`
 
-- After sorting and merging, we get the fully sorted **Main Chain**: `[6, 7, 8, 9]`
+### Step 3: Sort the Main Chain Recursively
 
-### **Step 4: Created Pend Chain**
+We now need to sort the Main Chain `[9, 7, 8, 6]` using the same algorithm. Here's exactly how the recursion works according to the merge-insertion sort implementation:
 
-- The "pend" chain consists of the smaller elements from each original pair, with each element being associated with a specific element from the main chain:
-  - **1** is associated with **3**
-  - **4** is associated with **5**
-  - **2** is associated with **6**
-  - **6** is associated with **8**
+**Recursion Level 1:**
+1. We take the Main Chain `[9, 7, 8, 6]` and apply the entire algorithm to it recursively
 
-- Now, we have:
-  - **Main Chain**: [6, 7, 8, 9]
-  - **Pend Chain**: [1, 4, 2, 6]
+**Recursion Level 2:**
+1. With input `[9, 7, 8, 6]`, we check for a straggler (no straggler as 4 is even)
+2. Form pairs: `(9, 7)` and `(8, 6)`
+3. Ensure larger element is first in each pair (already correct)
+4. Extract larger elements to form a new Main Chain: `[9, 8]`
+5. Apply the algorithm recursively to this new Main Chain
 
-### **Step 5: Merging the Main Chain and Pend Chain**
+**Recursion Level 3:**
+1. With input `[9, 8]`, we check for a straggler (no straggler as 2 is even)
+2. Form the single pair: `(9, 8)`
+3. Ensure larger element is first (already correct)
+4. Extract the larger element to form a new Main Chain: `[9]`
+5. Since the Main Chain now has only one element, we've reached our base case and stop recursion
 
-This is where the Ford-Johnson algorithm truly shines. Instead of inserting pend elements in a simple order, we use sequence based on [Jacobsthal numbers](https://en.wikipedia.org/wiki/Jacobsthal_number). Think of it as a mathematical pattern, similar to the Fibonacci sequence but with different rules:
+**Unwinding the Recursion:**
 
-- The Jacobsthal sequence is a specific integer sequence defined as:
-  - `J(0)` = `0`
-  - `J(1)` = `1`
-  - `J(n)` = `J(n-1) + 2*J(n-2) for n ≥ 2`
+**At Recursion Level 3:**
+- Our sorted Main Chain is simply `[9]`
+- We need to insert the smaller element from the pair `(9, 8)`
+- We start our result with the Main Chain element: `[9]`
+- Insert the smaller element `8` in the correct position: `[8, 9]`
+- This becomes our sorted result for this level: `[8, 9]`
 
-So the sequence begins: `0, 1, 1, 3, 5, 11, 21, 43, 85, 171, ...`
+**At Recursion Level 2:**
+- We now have the sorted Main Chain `[8, 9]` from the deeper recursion
+- We need to merge in the smaller elements from our original pairs
+- Initialize our result with the first Main Chain element: `[8]`
+- Insert the smaller element from the first pair `(9, 7)` using binary search: `[7, 8]`
+- Since the second element of the Main Chain (`9`) isn't in our result yet, insert it: `[7, 8, 9]`
+- Insert the smaller element from the second pair `(8, 6)` using binary search: `[6, 7, 8, 9]`
+- Our sorted result for this level is: `[6, 7, 8, 9]`
 
-This sequence is important for determining the order in which we'll insert elements later in the algorithm.
+**At Recursion Level 1:**
+- We now have the fully sorted Main Chain: `[6, 7, 8, 9]`
 
-```cpp
-std::vector<int> PmergeMe::getJacobsthalSequence(int n) {
-    std::vector<int> jacobsthal;
-    
-    jacobsthal.push_back(0);
-    if (n > 0)
-        jacobsthal.push_back(1);
-    
-    for (int i = 2; i <= n; i++) {
-        int next = jacobsthal[i-1] + 2 * jacobsthal[i-2];
-        jacobsthal.push_back(next);
-    }
-    
-    return jacobsthal;
-}
-```
+### Step 4: Insert Pend Chain Elements
 
-**Why Jacobsthal?**
+Now we need to insert the original Pend Chain elements `[3, 1, 4, 2]` into our sorted Main Chain `[6, 7, 8, 9]`.
 
-The key insight of the Ford-Johnson algorithm is that the Jacobsthal sequence provides an efficient order for binary insertion. When inserting elements into a sorted sequence, we typically need to perform binary searches to find the right position. The Jacobsthal sequence minimizes the number of comparisons needed across all these insertions.
-To understand why:
+Remember the original pairs:
+- `(9, 3)` - Main Chain: `9`, Pend Chain: `3`
+- `(7, 1)` - Main Chain: `7`, Pend Chain: `1`
+- `(8, 4)` - Main Chain: `8`, Pend Chain: `4`
+- `(6, 2)` - Main Chain: `6`, Pend Chain: `2`
 
-1. The Jacobsthal numbers grow roughly at a rate between linear and exponential
-2. By inserting elements in this specific order, we're optimizing the "divide" part of the binary search
-3. It ensures that we're making progress in sorting the array while minimizing comparisons
+We start by inserting the Pend Chain element from the first pair:
+- Insert `3` (from pair with `9`): `[3, 6, 7, 8, 9]`
+
+### Step 4: Insert Pend Chain Elements
+
+Now we need to insert the original Pend Chain elements `[3, 1, 4, 2]` into our sorted Main Chain `[6, 7, 8, 9]`.
+
+Remember the original pairs:
+- `(9, 3)` - Main Chain element: `9`, Pend Chain element: `3`
+- `(7, 1)` - Main Chain element: `7`, Pend Chain element: `1`
+- `(8, 4)` - Main Chain element: `8`, Pend Chain element: `4`
+- `(6, 2)` - Main Chain element: `6`, Pend Chain element: `2`
+
+First, we initialize our result with the first element from the sorted Main Chain:
+- Result: `[6]`
+
+Then we insert the smaller element from the first pair:
+- Since `(9, 3)` corresponds to Main Chain element `9`, we insert `3` using binary search: `[3, 6]`
+
+For the remaining insertions, we determine the order using the Jacobsthal sequence:
+
+1. Generate the Jacobsthal sequence: `0, 1, 1, 3, 5, 11, ...`
+2. Create an insertion order based on these numbers:
+   - Mark index 0 as already processed
+   - For the first Jacobsthal number after 0 (which is 1), add index 1 to our insertion order: `[1]`
+   - For the next Jacobsthal number (which is also 1), it's already processed
+   - For the next Jacobsthal number (which is 3), add index 3 to our insertion order: `[1, 3]`
+   - Then check indices between 3 and the previous processed Jacobsthal number (1) in reverse order:
+     - Add index 2 to our insertion order: `[1, 3, 2]`
+
+Following this insertion order:
+1. Process pair at index 1 `(7, 1)`:
+   - Insert Main Chain element `7` (if not already in result): `[3, 6, 7]`
+   - Insert Pend Chain element `1` using binary search: `[1, 3, 6, 7]`
+
+2. Process pair at index 3 `(6, 2)`:
+   - Main Chain element `6` is already in result
+   - Insert Pend Chain element `2` using binary search: `[1, 2, 3, 6, 7]`
+
+3. Process pair at index 2 `(8, 4)`:
+   - Insert Main Chain element `8` (if not already in result): `[1, 2, 3, 6, 7, 8]`
+   - Insert Pend Chain element `4` using binary search: `[1, 2, 3, 4, 6, 7, 8]`
+
+4. Insert the Main Chain element `9` (if not already in result): `[1, 2, 3, 4, 6, 7, 8, 9]`
+
+### Step 5: Insert the Straggler
+
+Finally, we insert our straggler `5` using binary search:
+- Find the correct position for `5` in our sorted array `[1, 2, 3, 4, 6, 7, 8, 9]`
+- Insert `5` at the correct position: `[1, 2, 3, 4, 5, 6, 7, 8, 9]`
+
+The fully sorted array is: `[1, 2, 3, 4, 5, 6, 7, 8, 9]`
+
+
 
 ## The Main Sorting Function - sortVector
 
-### Step 1: Handle odd-sized array
+The `sortVector()` function implements the Ford-Johnson algorithm with the following steps:
 
+### Step 1: Handle Base Cases and Straggler
+
+First, the function checks if sorting is needed at all:
+```cpp
+if (_vec.size() <= 1)
+    return;
+```
+
+If there's only 0 or 1 element, the vector is already sorted, so we return immediately.
+
+Next, we handle an odd-sized array by removing the last element temporarily:
 ```cpp
 bool hasStraggler = false;
 int straggler = 0;
@@ -186,22 +231,21 @@ if (_vec.size() % 2 != 0) {
 }
 ```
 
-If we have an odd number of elements, we temporarily remove the last element (called the "straggler") and set it aside to deal with later. This makes the rest of the algorithm easier since we'll be working with pairs.
+This "straggler" element will be reinserted later. Removing it makes the rest of the algorithm easier since we'll be working with pairs.
 
-### Step 2: Form pairs from consecutive elements
+### Step 2: Form and Sort Pairs
 
+We create pairs from consecutive elements:
 ```cpp
-std::vector<std::pair<int, int> > pairs;
+std::vector<std::pair<int, int>> pairs;
 for (size_t i = 0; i < _vec.size(); i += 2) {
     int first = _vec[i];
     int second = _vec[i + 1];
     pairs.push_back(std::make_pair(first, second));
 }
 ```
-Here we're taking elements two at a time and creating pairs. For example, if our array is `[3, 1, 4, 2]`, we form pairs: `(3,1)` and `(4,2)`.
 
-### Step 3: Sort elements within pairs
-
+Then we ensure the larger element is first in each pair:
 ```cpp
 for (size_t i = 0; i < pairs.size(); i++) {
     if (pairs[i].first < pairs[i].second)
@@ -209,31 +253,39 @@ for (size_t i = 0; i < pairs.size(); i++) {
 }
 ```
 
-We sort each pair so the larger element is first. Our pairs would now be: `(3,1)` → `(3,1)` and `(4,2)` → `(4,2)`.
+For example, if our array is `[3, 1, 4, 2]`, we form pairs: `(3,1)` and `(4,2)`. After ensuring the larger element is first, we have: `(3,1)` and `(4,2)`, which in this case didn't need to change.
 
+### Step 3: Extract and Sort the Main Chain
 
-### Step 4: Extract main chain (larger elements)
-
+The "main chain" consists of all the larger elements from each pair:
 ```cpp
 std::vector<int> mainChain;
 for (size_t i = 0; i < pairs.size(); i++) {
     mainChain.push_back(pairs[i].first);
 }
 ```
-We take all the larger elements (the first element in each pair) to form what's called the "main chain". In our example, that's `[3, 4]`.
 
-### Step 5: Recursively sort main chain
+Using our example, the main chain would be `[3, 4]`.
 
+Now we recursively sort this main chain:
 ```cpp
 if (mainChain.size() > 1) {
     _vec = mainChain;
     sortVector();
     mainChain = _vec;
+    _vec.clear();
 }
 ```
 
-### Step 6 & 7: Initialize result with first elements
+This is where the recursive magic happens. We:
+1. Replace the current vector with the main chain
+2. Call `sortVector()` recursively to sort it
+3. Get the sorted main chain back
+4. Clear the current vector so we can build our result
 
+### Step 4: Begin Rebuilding the Sorted Array
+
+We initialize our result with the main chain's first element and insert the smaller element from the first pair:
 ```cpp
 std::vector<int> result;
 if (!mainChain.empty())
@@ -243,176 +295,291 @@ if (!pairs.empty())
     result.insert(result.begin(), pairs[0].second);
 ```
 
-We start building our final sorted list:
+If our main chain is `[3, 4]` (already sorted by recursion), we:
+1. Start result with `[3]`
+2. Insert the smaller element from the first pair (1) at the beginning: `[1, 3]`
 
-- Add the first element from the sorted main chain `(3)`
-- Insert the smaller element from the first pair `(1)` at the beginning
-So our result is now `[1, 3]`.
+### Step 5: Generate Jacobsthal Sequence and Insertion Order
 
-### Step 8: Using the Jacobsthal Sequence for Remaining Elements
+For more than one pair, we use the Jacobsthal sequence to determine an optimal insertion order:
 
-At this point in our example, we have:
+```cpp
+if (pairs.size() > 1) {
+    int jacobsthalSize = 3;
+    while (getJacobsthalSequence(jacobsthalSize).back() < (int)pairs.size())
+        jacobsthalSize++;
 
-- Original array: `[3, 1, 4, 2]`
-- Pairs: `(3,1)` and `(4,2)` (with larger elements first)
-- Main chain (sorted): `[3, 4]`
-- Current result: `[1, 3]` (first smaller element and first main chain element)
+    std::vector<int> jacobSeq = getJacobsthalSequence(jacobsthalSize);
+    std::vector<int> insertionOrder = generateInsertionOrder(jacobSeq, pairs.size());
+```
 
-Now we need to efficiently insert the remaining elements.
+Let's break this down in extreme detail:
 
-#### 8.1: Generate the Jacobsthal Sequence
+#### 5.1 Finding the Right Jacobsthal Sequence Size
 
 ```cpp
 int jacobsthalSize = 3;
 while (getJacobsthalSequence(jacobsthalSize).back() < (int)pairs.size())
     jacobsthalSize++;
-
-std::vector<int> jacobSeq = getJacobsthalSequence(jacobsthalSize);
 ```
 
-First, we need to determine how many Jacobsthal numbers we need. We need enough numbers to cover all our pairs (in this case, 2 pairs).
+We need enough Jacobsthal numbers to cover all our pairs. For example, with 10 pairs:
 
 1. Start with `jacobsthalSize = 3`
-2. The Jacobsthal sequence for `3` is `[0, 1, 1]`
-3. The last number is `1`, which is less than our pairs size `(2)`
-4. So we increment to `jacobsthalSize = 4`
-5. The Jacobsthal sequence for `4` is `[0, 1, 1, 3]`
-6. The last number is `3`, which is greater than our pairs size `(2)`
-7. We stop and use this sequence: `[0, 1, 1, 3]`
+2. Generate sequence: `[0, 1, 1, 3]` (up to J(3))
+3. The last number is 3, which is < 10 (our pairs size)
+4. Increment to `jacobsthalSize = 4`
+5. Generate sequence: `[0, 1, 1, 3, 5]` (up to J(4))
+6. The last number is 5, which is < 10
+7. Increment to `jacobsthalSize = 5`
+8. Generate sequence: `[0, 1, 1, 3, 5, 11]` (up to J(5))
+9. The last number is 11, which is > 10
+10. Stop at `jacobsthalSize = 5`
 
+#### 5.2 Generating the Jacobsthal Sequence
 
-#### 8.2: Calculate Insertion Order
+The `getJacobsthalSequence(n)` function generates the Jacobsthal sequence up to the nth term:
 
 ```cpp
-std::vector<int> insertionOrder;
-std::vector<bool> inserted(pairs.size(), false);
-inserted[0] = true; // Mark first pair as already processed
+std::vector<int> PmergeMe::getJacobsthalSequence(int n)
+{
+    std::vector<int> jacobsthal;
+
+    jacobsthal.push_back(0);
+    if (n > 0)
+        jacobsthal.push_back(1);
+
+    for (int i = 2; i <= n; i++)
+    {
+        int next = jacobsthal[i - 1] + 2 * jacobsthal[i - 2];
+        jacobsthal.push_back(next);
+    }
+
+    return jacobsthal;
+}
 ```
 
-We're creating a list to track the order in which we'll insert the remaining pairs. We start by marking pair 0 as already processed (since we've already added it to our result in steps 6 and 7).
+This precisely follows the mathematical recurrence relation:
+- J(0) = 0
+- J(1) = 1
+- J(n) = J(n-1) + 2*J(n-2) for n ≥ 2
+
+The generated sequence begins: 0, 1, 1, 3, 5, 11, 21, 43, 85, 171...
+
+#### 5.3 Creating the Insertion Order
+
+The most complex part is generating the insertion order using the Jacobsthal sequence:
 
 ```cpp
-for (size_t i = 1; i < jacobSeq.size() && jacobSeq[i] < (int)pairs.size(); i++) {
-    int idx = jacobSeq[i];
-    if (!inserted[idx]) {
-        insertionOrder.push_back(idx);
-        inserted[idx] = true;
-    }
-    
-    // Fill in between Jacobsthal numbers in descending order
-    for (int j = idx - 1; j > jacobSeq[i-1]; j--) {
-        if (j >= 0 && j < (int)pairs.size() && !inserted[j]) {
-            insertionOrder.push_back(j);
-            inserted[j] = true;
+std::vector<int> PmergeMe::generateInsertionOrder(std::vector<int> &jacobSeq, size_t pairsSize)
+{
+    std::vector<int> insertionOrder;
+    std::vector<bool> inserted(pairsSize, false);
+    inserted[0] = true; // Mark first pair as already processed
+
+    for (size_t i = 1; i < jacobSeq.size(); i++)
+    {
+        int idx = jacobSeq[i];
+        if (idx < (int)pairsSize && !inserted[idx])
+        {
+            insertionOrder.push_back(idx);
+            inserted[idx] = true;
+        }
+
+        for (int j = idx - 1; j > jacobSeq[i - 1]; j--)
+        {
+            if (j >= 0 && j < (int)pairsSize && !inserted[j])
+            {
+                insertionOrder.push_back(j);
+                inserted[j] = true;
+            }
         }
     }
+
+    for (size_t i = 1; i < pairsSize; i++)
+    {
+        if (!inserted[i])
+            insertionOrder.push_back(i);
+    }
+
+    return insertionOrder;
 }
 ```
 
-Now we use the Jacobsthal sequence to determine the insertion order. The algorithm is:
+Let's trace through this function step by step with an example of 8 pairs:
 
-1. Start with the Jacobsthal numbers after `0`: `[1, 1, 3]`
-2. For each Jacobsthal number:
-  - Add that index to the insertion order (if it exists and hasn't been processed)
-  - Then, check all indices between this Jacobsthal number and the previous one, in reverse order
+1. Initialize `insertionOrder` as an empty vector
+2. Create `inserted` as a vector of 8 booleans, all initialized to `false`
+3. Mark the first element as already processed: `inserted[0] = true`
+4. With 8 pairs, we need a Jacobsthal sequence like `[0, 1, 1, 3, 5, 11]`
 
-Let's trace through this logic:
+Now we loop through the Jacobsthal sequence starting from index 1:
 
-- First, we look at Jacobsthal number at index `1`, which is `1`
-- We add `1` to our insertion order: [1]
-- There are no indices between `1` and the previous Jacobsthal number (`0`)
-- Next, we look at Jacobsthal number at index `2`, which is also `1`
-- It's already been processed, so we skip it
-- No new indices to check
-- Next, we look at Jacobsthal number at index `3`, which is `3`
-- This is greater than our pairs size (`2`), so we don't use it
+**For i=1 (Jacobsthal value 1):**
+- `idx = jacobSeq[1] = 1`
+- This index is valid and not inserted yet, so add 1 to `insertionOrder`: `[1]`
+- Mark `inserted[1] = true`
+- Check integers between 1 and previous Jacobsthal (0) - none exist
 
-So our insertion order becomes just [1].
+**For i=2 (Jacobsthal value 1 again):**
+- `idx = jacobSeq[2] = 1`
+- This is already inserted, so skip it
+- Check integers between 1 and previous Jacobsthal (1) - none exist
 
-```cpp
-// Add any remaining indices
-for (size_t i = 1; i < pairs.size(); i++) {
-    if (!inserted[i])
-        insertionOrder.push_back(i);
-}
-```
+**For i=3 (Jacobsthal value 3):**
+- `idx = jacobSeq[3] = 3`
+- This index is valid and not inserted yet, so add 3 to `insertionOrder`: `[1, 3]`
+- Mark `inserted[3] = true`
+- Check integers between 3 and previous Jacobsthal (1) in reverse order:
+  - j=2: Not inserted yet, add to `insertionOrder`: `[1, 3, 2]`
+  - Mark `inserted[2] = true`
 
-This code makes sure any indices that weren't covered by the Jacobsthal sequence get added to the end of our insertion order. In our example, since `pairs.size()` is `2` and we've only processed index `1`, there are no additional indices to add.
+**For i=4 (Jacobsthal value 5):**
+- `idx = jacobSeq[4] = 5`
+- This index is valid and not inserted yet, so add 5 to `insertionOrder`: `[1, 3, 2, 5]`
+- Mark `inserted[5] = true`
+- Check integers between 5 and previous Jacobsthal (3) in reverse order:
+  - j=4: Not inserted yet, add to `insertionOrder`: `[1, 3, 2, 5, 4]`
+  - Mark `inserted[4] = true`
 
-So our final insertion order is `[1]`, meaning we'll insert pair at index `1` next.
+**For i=5 (Jacobsthal value 11):**
+- `idx = jacobSeq[5] = 11`
+- This is beyond our pairs size (8), so we skip it
+- No integers to check between
 
-#### 8.3: Insert Elements According to the Determined Order
+**Final check for any remaining unprocessed indices:**
+- Indices 0,1,2,3,4,5 are marked as inserted
+- Indices 6,7 are not marked yet, so add them to `insertionOrder`: `[1, 3, 2, 5, 4, 6, 7]`
 
-At this point in our example:
+The final insertion order is `[1, 3, 2, 5, 4, 6, 7]`.
 
-- Our result array is: `[1, 3]` (containing the first small element and first main chain element)
-- Our insertion order is: `[1]` (meaning we need to process the pair at index 1)
-- The pair at index 1 is: `(4, 2)` (larger element 4, smaller element 2)
+This complex ordering is what makes the Ford-Johnson algorithm special. By inserting elements in this specific order, we minimize the number of comparisons needed during binary insertion.
 
-Let's examine the code with extremely detailed attention:
+### Step 6: Insert Remaining Elements According to the Insertion Order
+
+Once we have our insertion order, we systematically insert the remaining elements:
 
 ```cpp
 for (size_t i = 0; i < insertionOrder.size(); i++) {
     int idx = insertionOrder[i];
-    
-    // Insert main chain element if not already in result
-    if (std::find(result.begin(), result.end(), mainChain[idx]) == result.end()) {
-        std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), mainChain[idx]);
-        result.insert(pos, mainChain[idx]);
-    }
-    
-    // Insert smaller element
-    std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), pairs[idx].second);
+    std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), mainChain[idx]);
+    result.insert(pos, mainChain[idx]);
+
+    pos = std::lower_bound(result.begin(), result.end(), pairs[idx].second);
     result.insert(pos, pairs[idx].second);
 }
 ```
 
-**Step-by-Step Execution**
+Let's examine this insertion process in extreme detail using our example with insertion order `[1, 3, 2, 5, 4, 6, 7]` for 8 pairs:
 
-1. We begin the loop with `i = 0`
-2. We set `idx = insertionOrder[0]`, which is `1`
+#### 6.1 Binary Search Insertion Process
 
-**Inserting the Main Chain Element**
+For each index in our insertion order, we perform two key operations:
+1. Insert the main chain element (if not already in the result)
+2. Insert the corresponding smaller element from the pair
 
-First, we check if the main chain element at index `1` is already in our result:
+Let's assume our current `result` is `[1, 3]` (first main chain element and first pair's smaller element) and our main chain is `[6, 7, 8, 9, 10, 11, 12, 13]`. Our original pairs were:
+- Pair 0: `(6, 1)` - already processed
+- Pair 1: `(7, 2)`
+- Pair 2: `(8, 3)`
+- Pair 3: `(9, 4)`
+- Pair 4: `(10, 5)`
+- Pair 5: `(11, 6)`
+- Pair 6: `(12, 7)`
+- Pair 7: `(13, 8)`
 
-```cpp
-if (std::find(result.begin(), result.end(), mainChain[idx]) == result.end())
+**First iteration (i=0, idx=1):**
+- We need to process pair 1: `(7, 2)`
+- Find position for `mainChain[1]` which is `7`:
+  - `std::lower_bound(result.begin(), result.end(), 7)` performs a binary search:
+    - Mid element is `3`, `7 > 3`, so search in right half
+    - No more elements, so return position after `3`
+  - Insert `7` at this position: `result = [1, 3, 7]`
+- Find position for `pairs[1].second` which is `2`:
+  - `std::lower_bound(result.begin(), result.end(), 2)` performs a binary search:
+    - Mid element is `3`, `2 < 3`, so search in left half
+    - Mid element is `1`, `2 > 1`, so position is after `1`
+  - Insert `2` at this position: `result = [1, 2, 3, 7]`
+
+**Second iteration (i=1, idx=3):**
+- We need to process pair 3: `(9, 4)`
+- Find position for `mainChain[3]` which is `9`:
+  - Binary search finds position after `7`
+  - Insert `9` at this position: `result = [1, 2, 3, 7, 9]`
+- Find position for `pairs[3].second` which is `4`:
+  - Binary search finds position after `3` and before `7`
+  - Insert `4` at this position: `result = [1, 2, 3, 4, 7, 9]`
+
+**Third iteration (i=2, idx=2):**
+- We need to process pair 2: `(8, 3)`
+- Find position for `mainChain[2]` which is `8`:
+  - Binary search finds position after `7` and before `9`
+  - Insert `8` at this position: `result = [1, 2, 3, 4, 7, 8, 9]`
+- Find position for `pairs[2].second` which is `3`:
+  - Binary search finds position where `3` would go, but it's already there!
+  - If we were strictly implementing the algorithm, we'd insert it again, but in practice our code might handle this differently
+
+We would continue this process for the remaining indices in our insertion order (5, 4, 6, 7).
+
+#### 6.2 The `std::lower_bound` Magic
+
+The `std::lower_bound` function is crucial to this algorithm's efficiency. It implements a binary search algorithm to find the first position where a value could be inserted while maintaining the sorted order.
+
+For an array of size n, binary search has a time complexity of O(log n), which is vastly more efficient than a linear search (O(n)) for large arrays.
+
+For example, when finding the position to insert `4` in `[1, 2, 3, 7, 9]`:
+
+1. Compare with middle element (position 2): `3`
+   - `4 > 3`, so search in right half `[7, 9]`
+2. Compare with middle element (position 3): `7`
+   - `4 < 7`, so search in left half - but there's nothing between `3` and `7`
+3. Return position after `3`, which is position 3 (before `7`)
+
+This entire search took just 2 comparisons, whereas a linear search might have taken up to 5.
+
+#### 6.3 Performance Advantage of Ford-Johnson
+
+This insertion strategy, guided by the Jacobsthal sequence, is what gives the Ford-Johnson algorithm its performance advantage. By carefully controlling the order of insertions, we maximize the efficiency of each binary search.
+
+Without this strategic ordering, we might end up with worst-case scenarios for binary search. The Jacobsthal sequence ensures we build the sorted result in a way that minimizes total comparisons.
+
+### Step 7: Handle the Straggler Element
+
+Finally, if we had a straggler (odd element), we insert it back into our sorted array:
+```
+if (hasStraggler) {
+    std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), straggler);
+    result.insert(pos, straggler);
+}
 ```
 
-- `mainChain[1]` is `4`
-- `std::find` searches through `result` (`[1, 3]`) looking for the value `4`
-- Since `4` is not in `result`, `std::find` returns `result.end()`
-- The condition evaluates to `true`, so we enter the if-block
+We use binary search again to find the correct position for the straggler element.
 
-Now we need to find the correct position to insert `4`:
+### Step 8: Update the Original Vector
 
-```cpp
-std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), mainChain[idx]);
+The last step is to update our original vector with the sorted result:
+```
+_vec = result;
 ```
 
-- `std::lower_bound` is a binary search algorithm that finds the position where we should insert a value to maintain the sorted order
-- It searches through `result` (`[1, 3]`) to find the first position where `4` could be inserted
-- The function returns an iterator pointing to the position after `3` (the end of the array)
-- So `pos` points to the position after `3`
+### Complete Flow Using an Example
 
-Then we insert `4` at this position:
+Let's trace through the algorithm with a simple example: `[3, 1, 4, 2, 5]`.
 
-```cpp
-result.insert(pos, mainChain[idx]);
-```
+1. We identify element `5` as a straggler and set it aside: `[3, 1, 4, 2]`
+2. We form pairs: `(3,1)` and `(4,2)`
+3. We ensure larger element is first (already done): `(3,1)` and `(4,2)`
+4. We extract the main chain: `[3, 4]`
+5. We recursively sort the main chain:
+   - With only 2 elements, we form a single pair: `(3,4)`
+   - Swap to ensure larger is first: `(4,3)`
+   - The main chain is now just `[4]`
+   - Since it's only one element, it's already sorted
+   - Working back up, we insert `3` using binary search: `[3, 4]`
+6. We initialize our result with first main chain element and first pair's smaller element: `[1, 3]`
+7. For the second pair, we use our insertion order:
+   - Insert `4` using binary search: `[1, 3, 4]`
+   - Insert `2` using binary search: `[1, 2, 3, 4]`
+8. Finally, insert the straggler `5`: `[1, 2, 3, 4, 5]`
 
-- This inserts `4` at the position pointed to by `pos` (after `3`)
-- Our `result` is now `[1, 3, 4]`
-
-**Inserting the Smaller Element**
-
-```cpp
-std::vector<int>::iterator pos = std::lower_bound(result.begin(), result.end(), pairs[idx].second);
-```
-
-- `pairs[1].second` is `2` (the smaller element in the second pair)
-- `std::lower_bound` searches through `result` (`[1, 3, 4]`) to find where `2` should go
-- Since `2` is greater than `1` but less than `3`, it returns an iterator pointing to the position of `3` (index 1)
-- So `pos` points to the position of `3`
-
+The Ford-Johnson algorithm thus efficiently sorts the array while minimizing the number of comparisons required.
