@@ -23,7 +23,7 @@ bool RPN::isNumber(const char token) const
     return token >= '0' && token <= '9';
 }
 
-void RPN::performOperation(const char op)
+void RPN::ApplyOp(const char op)
 {
     if (_stack.size() < 2)
         throw std::runtime_error("Error");
@@ -54,7 +54,7 @@ void RPN::performOperation(const char op)
     }
 }
 
-int RPN::evaluate(const std::string &expression)
+int RPN::calculate(const std::string &expression)
 {
     std::istringstream iss(expression);
     std::string token;
@@ -75,7 +75,7 @@ int RPN::evaluate(const std::string &expression)
         }
         else if (isOperator(c))
         {
-            performOperation(c);
+            ApplyOp(c);
         }
         else
         {

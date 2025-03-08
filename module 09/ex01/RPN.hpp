@@ -12,7 +12,7 @@ class RPN
 private:
     std::stack<int> _stack;
     bool isOperator(const char token) const;
-    void performOperation(const char op);
+    void ApplyOp(const char op);
     bool isNumber(const char token) const;
 
 public:
@@ -20,7 +20,7 @@ public:
     RPN(const RPN &other);
     RPN &operator=(const RPN &other);
     ~RPN();
-    int evaluate(const std::string &expression);
+    int calculate(const std::string &expression);
 };
 
 #endif
