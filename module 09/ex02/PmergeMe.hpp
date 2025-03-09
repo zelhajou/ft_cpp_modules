@@ -21,7 +21,7 @@ private:
 
     bool isValidNumber(const char *str);
     std::vector<int> getJacob(size_t size);
-    std::vector<int> getInsertPos(std::vector<int> &jacobSeq, size_t size);
+    std::vector<int> getInsertPos(size_t size);
 
     void sortVector();
     void sortDeque();

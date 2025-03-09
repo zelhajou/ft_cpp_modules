@@ -30,7 +30,7 @@ bool PmergeMe::isValidNumber(const char *str)
     char *ptr;
     long num = strtol(str, &ptr, 10);
 
-    if (*ptr != '\0' || num <= 0 || num > INT_MAX)
+    if (*ptr != '\0' || num < 0 || num > INT_MAX)
         return false;
 
     return true;
@@ -73,8 +73,9 @@ std::vector<int> PmergeMe::getJacob(size_t size)
 }
 
 
-std::vector<int> PmergeMe::getInsertPos(std::vector<int> &jacobSeq, size_t size)
+std::vector<int> PmergeMe::getInsertPos(size_t size)
 {
+    std::vector<int> jacobSeq = getJacob(size);
     std::vector<int> order;
     std::vector<bool> used(size, false);
     used[0] = true;
@@ -157,8 +158,7 @@ void PmergeMe::sortVector()
 
     if (pendChain.size() > 1)
     {
-        std::vector<int> jacobSeq = getJacob(pendChain.size());
-        std::vector<int> insertionOrder = getInsertPos(jacobSeq, pendChain.size());
+        std::vector<int> insertionOrder = getInsertPos(pendChain.size());
 
         for (size_t i = 0; i < insertionOrder.size(); i++)
         {
@@ -234,8 +234,7 @@ void PmergeMe::sortDeque()
 
     if (pendChain.size() > 1)
     {
-        std::vector<int> jacobSeq = getJacob(pendChain.size());
-        std::vector<int> insertionOrder = getInsertPos(jacobSeq, pendChain.size());
+        std::vector<int> insertionOrder = getInsertPos(pendChain.size());
 
         for (size_t i = 0; i < insertionOrder.size(); i++)
         {
@@ -271,6 +270,15 @@ void PmergeMe::sort()
     sortDeque();
     clock_t deqEnd = clock();
     double deqTime = static_cast<double>(deqEnd - deqStart) / CLOCKS_PER_SEC * 1000000;
+
+    // for (size_t i = 1; i < _vec.size(); i++)
+    // {
+    //     if (_vec[i] < _vec[i - 1])
+    //     {
+    //         std::cerr << "Error: std::vector is not sorted" << std::endl;
+    //         return;
+    //     }
+    // }
 
     printSeq(original, "Before");
     printSeq(_vec, "After");

@@ -192,21 +192,28 @@ void BitcoinExchange::processInputFile(const std::string &filename) const
             continue;
         }
 
+        std::stringstream ss(valueStr);
+        float value;
+
+        ss >> value;   
+
+        if (!ss.eof())
+        {
+            std::cout << "Error: bad input => " << valueStr << std::endl;
+            continue;
+        }
+
+        if (!isValidValue(value))
+        {
+            if (value < 0)
+                std::cout << "Error: not a positive number." << std::endl;
+            else
+                std::cout << "Error: too large a number." << std::endl;
+            continue;
+        }
+
         try
         {
-            if (valueStr.find_first_not_of("0123456789.-") != std::string::npos)
-                throw std::runtime_error("Invalid value format");                
-            float value = atof(valueStr.c_str());
-
-            if (!isValidValue(value))
-            {
-                if (value < 0)
-                    std::cout << "Error: not a positive number." << std::endl;
-                else
-                    std::cout << "Error: too large a number." << std::endl;
-                continue;
-            }
-
             float exchangeRate = getExchangeRate(date);
             std::cout << date << " => " << value << " = " << value * exchangeRate << std::endl;
         }
