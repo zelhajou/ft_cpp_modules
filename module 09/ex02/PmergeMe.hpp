@@ -20,12 +20,24 @@ private:
     std::deque<int> _deq;
 
     bool isValidNumber(const char *str);
-    void printSeq(const std::vector<int> &seq, const std::string &label);
-    std::vector<int> getJacob(int n);
-    std::vector<int> getInsertPos(std::vector<int> &jacobSeq, size_t pairsSize);
+    std::vector<int> getJacob(size_t size);
+    std::vector<int> getInsertPos(std::vector<int> &jacobSeq, size_t size);
 
     void sortVector();
     void sortDeque();
+
+    template<typename T>
+    void printSeq(const T &seq, const std::string &label)
+    {
+        std::cout << label << ": ";
+        for (size_t i = 0; i < seq.size(); i++)
+        {
+            if (i > 0)
+                std::cout << " ";
+            std::cout << seq[i];
+        }
+        std::cout << std::endl;
+    }
 
 public:
     PmergeMe();
