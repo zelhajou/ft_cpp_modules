@@ -120,20 +120,19 @@ void BitcoinExchange::loadDataBase(const std::string &filename)
         if (!isValidDate(date))
             throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid date => " + date);
 
-        try
-        {
-            if (valueStr.find_first_not_of("0123456789.-") != std::string::npos)
-                throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid value => " + valueStr);                
-            float value = atof(valueStr.c_str());
-            
-            if (value < 0)
-                throw std::runtime_error("Error at line " + intToString(lineCount) + ": negative value => " + valueStr);
-            _database[date] = value;
-        }
-        catch (const std::exception &e)
-        {
+        std::stringstream ss2(valueStr);
+        float value;
+        ss2 >> value;
+
+        if (!ss2.eof())
             throw std::runtime_error("Error at line " + intToString(lineCount) + ": invalid value => " + valueStr);
-        }
+        
+      
+        if (value < 0)
+            throw std::runtime_error("Error at line " + intToString(lineCount) + ": negative value => " + valueStr);
+        
+        _database[date] = value;
+        
     }
     if (_database.empty())
         throw std::runtime_error("Error: empty database");

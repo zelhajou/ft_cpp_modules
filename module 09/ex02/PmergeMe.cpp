@@ -241,9 +241,8 @@ void PmergeMe::sortDeque()
             int idx = insertionOrder[i];
             if (idx > 0 && idx < (int)pendChain.size())
             {
-                int elementToInsert = pendChain[idx];
-                std::deque<int>::iterator pos = std::lower_bound(result.begin(), result.end(), elementToInsert);
-                result.insert(pos, elementToInsert);
+                std::deque<int>::iterator pos = std::lower_bound(result.begin(), result.end(), pendChain[idx]);
+                result.insert(pos, pendChain[idx]);
             }
         }
     }
@@ -275,7 +274,7 @@ void PmergeMe::sort()
     // {
     //     if (_vec[i] < _vec[i - 1])
     //     {
-    //         std::cerr << "Error: std::vector is not sorted" << std::endl;
+    //         std::cerr << "Error: std::vector is no sorted" << std::endl;
     //         return;
     //     }
     // }
